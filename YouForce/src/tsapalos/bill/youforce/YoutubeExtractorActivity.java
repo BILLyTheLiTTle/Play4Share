@@ -2,16 +2,27 @@
 package tsapalos.bill.youforce;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class YoutubeExtractorActivity extends Activity {
+
+    private TextView incomingURLTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_youtube_extractor);
+
+        incomingURLTextView = (TextView) findViewById(R.id.incoming_url_content_textview);
+
+        Intent intent = getIntent();
+        String link = intent.getDataString();
+        if (link != null)
+            incomingURLTextView.setText(link);
     }
 
     @Override
