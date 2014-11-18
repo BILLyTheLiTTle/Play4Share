@@ -54,7 +54,8 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/youtube_video_url_content_textview"
             android:layout_marginTop="50dp"
-            android:text="@string/play" />
+            android:text="@string/play"
+            android:onClick="play" />
 
         <Button
             android:id="@+id/bug_report_button"
