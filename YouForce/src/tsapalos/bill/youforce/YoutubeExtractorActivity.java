@@ -81,6 +81,9 @@ public class YoutubeExtractorActivity extends Activity {
     private String getRawPageUrl(String facebookURL){
         String start = ".php?u=";
         String end = "&h=";
+        if(!(facebookURL.contains(start)&&facebookURL.contains(end))){
+            return facebookURL;
+        }
         String rawURL = facebookURL.substring(facebookURL.indexOf(start)+7, facebookURL.indexOf(end));
         rawURL = rawURL.replaceAll("%3A", ":");
         rawURL = rawURL.replaceAll("%2F", "/");
@@ -96,7 +99,7 @@ public class YoutubeExtractorActivity extends Activity {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
         StringBuilder sb = new StringBuilder();
         String line = null;
-        while (!(line = reader.readLine()).equalsIgnoreCase("</html>")) // Read line by line
+        while ((line = reader.readLine())!=null) // Read line by line
             sb.append(line + "\n");
 
         String resString = sb.toString(); // Result is here
