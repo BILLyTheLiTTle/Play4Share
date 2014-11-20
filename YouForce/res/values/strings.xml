@@ -10,5 +10,9 @@
     <string name="bug_report">Report bug</string>
     <string name="exit">Exit</string>
     <string name="action_settings">Settings</string>
+    <string name="ok_toast">Video URL found! Press the \"%1$s\" button to view the video.</string>
+    <string name="error_toast">Something bad happened! Please, report the bug by pressing the \"%1$s\" button.</string>
+    <string name="not_found">Not Found!</string>
+    <string name="searching">Please wait! Searching...</string>
 
 </resources>

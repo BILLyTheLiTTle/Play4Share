@@ -18,17 +18,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class YoutubeExtractorActivity extends Activity {
 
     private TextView incomingURLTextView, youtubeVideoURLTextView;
+    private Button play;
 
-    private String htmlSource,link, videoURL = null;
+    private String htmlSource, link, videoURL, exceptionText = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,8 @@ public class YoutubeExtractorActivity extends Activity {
         setContentView(R.layout.activity_youtube_extractor);
 
         incomingURLTextView = (TextView) findViewById(R.id.incoming_url_content_textview);
+        youtubeVideoURLTextView = (TextView) findViewById(R.id.youtube_video_url_content_textview);
+        play = (Button) findViewById(R.id.play_button);
 
         Intent intent = getIntent();
         link = intent.getDataString();
@@ -43,76 +50,73 @@ public class YoutubeExtractorActivity extends Activity {
             incomingURLTextView.setText(link);
 
         // get the html source and export the video url
-        Thread thr = new Thread() {
-            public void run() {
-                try {
-                    String raw = getRawPageUrl(link);
-                    Log.e("RAW",raw);
-                    htmlSource = getHtmlSource(raw);
-                    Log.e("PAGE",htmlSource);
-                    videoURL = exportVideoURL(htmlSource);
-                    Log.e("VIDEO",videoURL);
-                    //
+        stripUrl();
+    }
 
-                    youtubeVideoURLTextView = (TextView) findViewById(R.id.youtube_video_url_content_textview);
-                    //if (htmlSource != null)
-                        youtubeVideoURLTextView.setText("https://www.youtube.com/watch?v="+videoURL);
-                    
-                    
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+    private void stripUrl() {
+        final Handler handler = new Handler() {
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 3) {
+                    String txt = getString(R.string.play) + " (3)";
+                    play.setText(txt);
+                }
+                else if (msg.what == 2) {
+                    youtubeVideoURLTextView.setText(R.string.searching);
+                    String txt = getString(R.string.play) + " (2)";
+                    play.setText(txt);
+                }
+                else if (msg.what == 1) {
+                    String txt = getString(R.string.play) + " (1)";
+                    play.setText(txt);
+                }
+                else if (msg.what == 0) {
+                    youtubeVideoURLTextView.setText("https://www.youtube.com/watch?v=" + videoURL);
+                    String txt = getString(R.string.play);
+                    play.setText(txt);
+                    play.setEnabled(true);
+                    String toast = String.format(getString(R.string.ok_toast),
+                            getString(R.string.play));
+                    Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
+                }
+                else if (msg.what == -1) {
+                    youtubeVideoURLTextView.setText(R.string.not_found);
+                    String txt = getString(R.string.play);
+                    play.setText(txt);
+                    String toast = String.format(getString(R.string.error_toast),
+                            getString(R.string.bug_report));
+                    Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
                 }
             }
         };
-        thr.start();
-        // String videoURL = exportVideoURL(htmlSource);
-
-        // show me the video url
+        new Thread() {
+            public void run() {
+                try {
+                    if (link != null) {
+                        handler.sendMessage(handler.obtainMessage(3));
+                        String raw = UrlUtils.getRawPageUrl(link);
+                        Log.e("RAW", raw);
+                        handler.sendMessage(handler.obtainMessage(2));
+                        htmlSource = UrlUtils.getHtmlSource(raw);
+                        Log.e("PAGE", htmlSource);
+                        handler.sendMessage(handler.obtainMessage(1));
+                        videoURL = UrlUtils.exportVideoUrl(htmlSource);
+                        Log.e("VIDEO", videoURL);
+                        handler.sendMessage(handler.obtainMessage(0));
+                    }
+                } catch (Exception ex) {
+                    exceptionText = ex.getMessage();
+                    handler.sendMessage(handler.obtainMessage(-1));
+                }
+            };
+        }.start();
     }
-    
-    public void play(View view){
-        String url = "https://www.youtube.com/watch?v="+videoURL;
+
+    public void play(View view) {
+        String url = "https://www.youtube.com/watch?v=" + videoURL;
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
-    }
-    
-    private String getRawPageUrl(String facebookURL){
-        String start = ".php?u=";
-        String end = "&h=";
-        if(!(facebookURL.contains(start)&&facebookURL.contains(end))){
-            return facebookURL;
-        }
-        String rawURL = facebookURL.substring(facebookURL.indexOf(start)+7, facebookURL.indexOf(end));
-        rawURL = rawURL.replaceAll("%3A", ":");
-        rawURL = rawURL.replaceAll("%2F", "/");
-        return rawURL;
-    }
-
-    private String getHtmlSource(String pageUrl) throws IllegalStateException, IOException {
-        HttpClient httpclient = new DefaultHttpClient(); // Create HTTP Client
-        HttpGet httpget = new HttpGet(pageUrl); // Set the action you want to do
-        HttpResponse response = httpclient.execute(httpget); // Executeit
-        HttpEntity entity = response.getEntity(); 
-        InputStream is = entity.getContent(); // Create an InputStream with the response
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-        StringBuilder sb = new StringBuilder();
-        String line = null;
-        while ((line = reader.readLine())!=null) // Read line by line
-            sb.append(line + "\n");
-
-        String resString = sb.toString(); // Result is here
-
-        is.close();
-        return resString;
-    }
-
-    private String exportVideoURL(String pageSource) {
-        String start = "data-videoid=\"";
-        String end = "\" data-appid=\"";
-        String videoURL = pageSource.substring(pageSource.indexOf(start)+14, pageSource.indexOf(end));
-        return videoURL;
     }
 
     @Override
