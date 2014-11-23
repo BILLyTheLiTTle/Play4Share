@@ -19,6 +19,9 @@ public class UrlUtils {
         String start = ".php?u=";
         String end = "&h=";
         if (!(facebookUrl.contains(start) && facebookUrl.contains(end))) {
+            // clean the stripped url from page pointers
+            if (facebookUrl.lastIndexOf("/#") != -1)
+                facebookUrl = facebookUrl.replaceAll("/#", "/");
             return facebookUrl;
         }
         String rawURL = facebookUrl.substring(facebookUrl.indexOf(start) + 7,
@@ -50,26 +53,26 @@ public class UrlUtils {
 
     public static String exportVideoUrl(String pageSource) {
         String start, end, videoUrl = null;
-        
+
         // 1st attempt
         start = "data-videoid=\"";
         if (pageSource.contains(start)) {
             videoUrl = pageSource.substring(pageSource.indexOf(start));
             end = "\" ";
-            if(videoUrl != null)
-            videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 14,
-                    videoUrl.indexOf(end));
+            if (videoUrl != null)
+                videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 14,
+                        videoUrl.indexOf(end));
         }
-        
+
         // 2nd attempt
         if (videoUrl == null) {
             start = ".youtube.com/embed/";
             if (pageSource.contains(start)) {
                 videoUrl = pageSource.substring(pageSource.indexOf(start));
                 end = "\" ";
-                if(videoUrl != null)
-                videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 19,
-                        videoUrl.indexOf(end));
+                if (videoUrl != null)
+                    videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 19,
+                            videoUrl.indexOf(end));
             }
         }
 
@@ -79,9 +82,9 @@ public class UrlUtils {
             if (pageSource.contains(start)) {
                 videoUrl = pageSource.substring(pageSource.indexOf(start));
                 end = "\" ";
-                if(videoUrl != null)
-                videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 21,
-                        videoUrl.indexOf(end));
+                if (videoUrl != null)
+                    videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 21,
+                            videoUrl.indexOf(end));
             }
         }
         return videoUrl;
