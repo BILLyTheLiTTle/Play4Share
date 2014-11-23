@@ -1,6 +1,8 @@
 
 package tsapalos.bill.youforce;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,10 +49,30 @@ public class UrlUtils {
     }
 
     public static String exportVideoUrl(String pageSource) {
-        String start = "data-videoid=\"";
-        String end = "\" data-appid=\"";
-        String videoURL = pageSource.substring(pageSource.indexOf(start) + 14,
-                pageSource.indexOf(end));
-        return videoURL;
+        String start, end, videoUrl = null;
+        
+        // 1st attempt
+        start = "data-videoid=\"";
+        if (pageSource.contains(start)) {
+            videoUrl = pageSource.substring(pageSource.indexOf(start));
+            
+        }
+        end = "\" ";
+        if(videoUrl != null)
+        videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 14,
+                videoUrl.indexOf(end));
+
+        // 2nd attempt
+        if (videoUrl == null) {
+            start = ".youtube.com/embed/";
+            if (pageSource.contains(start)) {
+                videoUrl = pageSource.substring(pageSource.indexOf(start));
+            }
+            end = "\" ";
+            if(videoUrl != null)
+            videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 19,
+                    videoUrl.indexOf(end));
+        }
+        return videoUrl;
     }
 }

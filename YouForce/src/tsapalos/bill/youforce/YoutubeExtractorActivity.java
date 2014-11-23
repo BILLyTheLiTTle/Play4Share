@@ -33,7 +33,7 @@ public class YoutubeExtractorActivity extends Activity {
     private TextView incomingURLTextView, youtubeVideoURLTextView;
     private Button play;
 
-    private String htmlSource, link, videoURL, exceptionText = null;
+    private String htmlSource, link, videoUrl, exceptionText = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +71,7 @@ public class YoutubeExtractorActivity extends Activity {
                     play.setText(txt);
                 }
                 else if (msg.what == 0) {
-                    youtubeVideoURLTextView.setText("https://www.youtube.com/watch?v=" + videoURL);
+                    youtubeVideoURLTextView.setText("https://www.youtube.com/watch?v=" + videoUrl);
                     String txt = getString(R.string.play);
                     play.setText(txt);
                     play.setEnabled(true);
@@ -95,13 +95,13 @@ public class YoutubeExtractorActivity extends Activity {
                     if (link != null) {
                         handler.sendMessage(handler.obtainMessage(3));
                         String raw = UrlUtils.getRawPageUrl(link);
-                        Log.e("RAW", raw);
+                        //Log.e("RAW", raw);
                         handler.sendMessage(handler.obtainMessage(2));
                         htmlSource = UrlUtils.getHtmlSource(raw);
-                        Log.e("PAGE", htmlSource);
+                        //Log.e("PAGE", htmlSource);
                         handler.sendMessage(handler.obtainMessage(1));
-                        videoURL = UrlUtils.exportVideoUrl(htmlSource);
-                        Log.e("VIDEO", videoURL);
+                        videoUrl = UrlUtils.exportVideoUrl(htmlSource);
+                        //Log.e("VIDEO", videoURL);
                         handler.sendMessage(handler.obtainMessage(0));
                     }
                 } catch (Exception ex) {
@@ -113,7 +113,7 @@ public class YoutubeExtractorActivity extends Activity {
     }
 
     public void play(View view) {
-        String url = "https://www.youtube.com/watch?v=" + videoURL;
+        String url = "https://www.youtube.com/watch?v=" + videoUrl;
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
