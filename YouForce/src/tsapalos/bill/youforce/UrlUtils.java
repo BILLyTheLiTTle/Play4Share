@@ -52,40 +52,25 @@ public class UrlUtils {
     }
 
     public static String exportVideoUrl(String pageSource) {
-        String start, end, videoUrl = null;
+        String[] start = new String[] {
+                "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v="
+        };
+        int[] start_advance = new int[] {
+                14, 19, 21
+        };
+        String end = "\" ", videoUrl = null;
 
-        // 1st attempt
-        start = "data-videoid=\"";
-        if (pageSource.contains(start)) {
-            videoUrl = pageSource.substring(pageSource.indexOf(start));
-            end = "\" ";
-            if (videoUrl != null)
-                videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 14,
-                        videoUrl.indexOf(end));
-        }
-
-        // 2nd attempt
-        if (videoUrl == null) {
-            start = ".youtube.com/embed/";
-            if (pageSource.contains(start)) {
-                videoUrl = pageSource.substring(pageSource.indexOf(start));
-                end = "\" ";
+        int i = 0;
+        while (i < start.length) {
+            if (pageSource.contains(start[i])) {
+                videoUrl = pageSource.substring(pageSource.indexOf(start[i]));
                 if (videoUrl != null)
-                    videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 19,
+                    videoUrl = videoUrl.substring(videoUrl.indexOf(start[i]) + start_advance[i],
                             videoUrl.indexOf(end));
-            }
-        }
-
-        // 3rd attempt
-        if (videoUrl == null) {
-            start = ".youtube.com/watch?v=";
-            if (pageSource.contains(start)) {
-                videoUrl = pageSource.substring(pageSource.indexOf(start));
-                end = "\" ";
                 if (videoUrl != null)
-                    videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 21,
-                            videoUrl.indexOf(end));
+                    break;
             }
+            i++;
         }
         return videoUrl;
     }
