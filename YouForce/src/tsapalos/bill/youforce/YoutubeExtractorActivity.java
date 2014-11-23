@@ -95,13 +95,16 @@ public class YoutubeExtractorActivity extends Activity {
                     if (link != null) {
                         handler.sendMessage(handler.obtainMessage(3));
                         String raw = UrlUtils.getRawPageUrl(link);
-                        //Log.e("RAW", raw);
+                        Log.e("RAW", raw);
                         handler.sendMessage(handler.obtainMessage(2));
                         htmlSource = UrlUtils.getHtmlSource(raw);
                         //Log.e("PAGE", htmlSource);
                         handler.sendMessage(handler.obtainMessage(1));
                         videoUrl = UrlUtils.exportVideoUrl(htmlSource);
-                        //Log.e("VIDEO", videoURL);
+                        Log.e("VIDEO", videoUrl);
+                        if(videoUrl == null){
+                            throw new NullPointerException("The video URL is null!");
+                        }
                         handler.sendMessage(handler.obtainMessage(0));
                     }
                 } catch (Exception ex) {

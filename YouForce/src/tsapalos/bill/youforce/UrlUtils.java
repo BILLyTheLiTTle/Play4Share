@@ -55,23 +55,34 @@ public class UrlUtils {
         start = "data-videoid=\"";
         if (pageSource.contains(start)) {
             videoUrl = pageSource.substring(pageSource.indexOf(start));
-            
+            end = "\" ";
+            if(videoUrl != null)
+            videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 14,
+                    videoUrl.indexOf(end));
         }
-        end = "\" ";
-        if(videoUrl != null)
-        videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 14,
-                videoUrl.indexOf(end));
-
+        
         // 2nd attempt
         if (videoUrl == null) {
             start = ".youtube.com/embed/";
             if (pageSource.contains(start)) {
                 videoUrl = pageSource.substring(pageSource.indexOf(start));
+                end = "\" ";
+                if(videoUrl != null)
+                videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 19,
+                        videoUrl.indexOf(end));
             }
-            end = "\" ";
-            if(videoUrl != null)
-            videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 19,
-                    videoUrl.indexOf(end));
+        }
+
+        // 3rd attempt
+        if (videoUrl == null) {
+            start = ".youtube.com/watch?v=";
+            if (pageSource.contains(start)) {
+                videoUrl = pageSource.substring(pageSource.indexOf(start));
+                end = "\" ";
+                if(videoUrl != null)
+                videoUrl = videoUrl.substring(videoUrl.indexOf(start) + 21,
+                        videoUrl.indexOf(end));
+            }
         }
         return videoUrl;
     }
