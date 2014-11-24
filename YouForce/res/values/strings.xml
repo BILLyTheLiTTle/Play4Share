@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">YouForce</string>
+    <string name="app_name">Play4Share</string>
     <string name="incoming_url">Incoming URL:</string>
     <string name="incoming_url_content">Incoming URL should appear here!</string>
     <string name="youtube_video_url">Youtube Video URL:</string>

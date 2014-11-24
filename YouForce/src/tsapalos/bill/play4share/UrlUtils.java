@@ -1,5 +1,5 @@
 
-package tsapalos.bill.youforce;
+package tsapalos.bill.play4share;
 
 import android.util.Log;
 

@@ -1,6 +1,7 @@
 
-package tsapalos.bill.youforce;
+package tsapalos.bill.play4share;
 
+import tsapalos.bill.play4share.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
