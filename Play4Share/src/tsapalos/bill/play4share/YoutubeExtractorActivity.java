@@ -129,7 +129,7 @@ public class YoutubeExtractorActivity extends Activity {
         startActivity(Intent.createChooser(emailIntent, getString(R.string.email_chooser_title)));
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.youtube_extractor, menu);
@@ -146,5 +146,5 @@ public class YoutubeExtractorActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }
