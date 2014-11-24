@@ -121,6 +121,14 @@ public class YoutubeExtractorActivity extends Activity {
         i.setData(Uri.parse(url));
         startActivity(i);
     }
+    
+    public void exit(View view) {
+        finish();
+    }
+    
+    public void reportBug(View view) {
+        
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

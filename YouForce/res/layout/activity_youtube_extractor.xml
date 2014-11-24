@@ -64,7 +64,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/play_button"
             android:layout_alignParentRight="true"
-            android:text="@string/bug_report" />
+            android:text="@string/bug_report"
+            android:onClick="reportBug" />
 
         <Button
             android:id="@+id/exit_button"
@@ -72,7 +73,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/play_button"
             android:layout_marginTop="50dp"
-            android:text="@string/exit" />
+            android:text="@string/exit"
+            android:onClick="exit" />
     </RelativeLayout>
 
 </ScrollView>
