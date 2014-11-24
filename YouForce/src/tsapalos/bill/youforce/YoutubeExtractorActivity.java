@@ -1,26 +1,12 @@
 
 package tsapalos.bill.youforce;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +19,8 @@ public class YoutubeExtractorActivity extends Activity {
     private TextView incomingURLTextView, youtubeVideoURLTextView;
     private Button play;
 
-    private String htmlSource, link, videoUrl, exceptionText = null;
+    private String htmlSource, link, videoUrl = null,
+            exceptionLog = "Dear LiTTle,\n\nI have no bug to report but I want to thank you for your effort.";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,20 +82,22 @@ public class YoutubeExtractorActivity extends Activity {
                     if (link != null) {
                         handler.sendMessage(handler.obtainMessage(3));
                         String raw = UrlUtils.getRawPageUrl(link);
-                        //Log.e("RAW", raw);
+                        // Log.e("RAW", raw);
                         handler.sendMessage(handler.obtainMessage(2));
                         htmlSource = UrlUtils.getHtmlSource(raw);
-                        //Log.e("PAGE", htmlSource);
+                        // Log.e("PAGE", htmlSource);
                         handler.sendMessage(handler.obtainMessage(1));
                         videoUrl = UrlUtils.exportVideoUrl(htmlSource);
-                        //Log.e("VIDEO", videoUrl);
-                        if(videoUrl == null){
+                        // Log.e("VIDEO", videoUrl);
+                        if (videoUrl == null) {
                             throw new NullPointerException("The video URL is null!");
                         }
                         handler.sendMessage(handler.obtainMessage(0));
                     }
                 } catch (Exception ex) {
-                    exceptionText = ex.getMessage();
+                    exceptionLog = "The URL (" + link
+                            + ") throws an excpetion.\nThe esception log is:\n==========\n";
+                    exceptionLog = exceptionLog + ex.getMessage() + "\n==========";
                     handler.sendMessage(handler.obtainMessage(-1));
                 }
             };
@@ -121,13 +110,22 @@ public class YoutubeExtractorActivity extends Activity {
         i.setData(Uri.parse(url));
         startActivity(i);
     }
-    
+
     public void exit(View view) {
         finish();
     }
-    
+
     public void reportBug(View view) {
-        
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        // Fill it with Data
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {
+            "littleprog@gmail.com"
+        });
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "[BUG] YouForce video sniffing");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, exceptionLog);
+        // Send it off to the Activity-Chooser
+        startActivity(Intent.createChooser(emailIntent, getString(R.string.email_chooser_title)));
     }
 
     @Override

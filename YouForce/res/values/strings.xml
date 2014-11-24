@@ -14,5 +14,6 @@
     <string name="error_toast">Something bad happened! Please, report the bug by pressing the \"%1$s\" button.</string>
     <string name="not_found">Not Found!</string>
     <string name="searching">Please wait! Searching...</string>
+    <string name="email_chooser_title">Email bug report...</string>
 
 </resources>
