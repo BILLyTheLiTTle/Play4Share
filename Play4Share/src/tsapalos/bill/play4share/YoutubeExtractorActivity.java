@@ -97,7 +97,7 @@ public class YoutubeExtractorActivity extends Activity {
                     }
                 } catch (Exception ex) {
                     exceptionLog = "The URL (" + link
-                            + ") throws an excpetion.\nThe esception log is:\n==========\n";
+                            + ") throws an exception.\nThe exception log is:\n==========\n";
                     exceptionLog = exceptionLog + ex.getMessage() + "\n==========";
                     handler.sendMessage(handler.obtainMessage(-1));
                 }
