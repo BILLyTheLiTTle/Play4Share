@@ -20,8 +20,7 @@ public class YoutubeExtractorActivity extends Activity {
     private TextView incomingURLTextView, youtubeVideoURLTextView;
     private Button play;
 
-    private String htmlSource, link, videoUrl = null,
-            exceptionLog = "Dear LiTTle,\n\nI have no bug to report but I want to thank you for your effort.";
+    private String htmlSource, link, exceptionLog, videoUrl = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +33,11 @@ public class YoutubeExtractorActivity extends Activity {
 
         Intent intent = getIntent();
         link = intent.getDataString();
-        if (link != null)
+        if (link != null){
             incomingURLTextView.setText(link);
+            exceptionLog = "The URL (" + link
+                    + ") does not throw an exception but the video cannot be played.";
+        }
 
         // get the html source and export the video url
         stripUrl();
