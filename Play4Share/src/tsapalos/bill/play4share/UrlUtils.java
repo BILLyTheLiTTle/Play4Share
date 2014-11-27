@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -82,7 +84,7 @@ public class UrlUtils {
                         for (int k = 0; k < chars.length; k++) {
                             //we need letters, numbers and some special characters as a part of the video's url
                             //TODO create an array of special characters, approved for url usage
-                            if ((Character.isLetterOrDigit(chars[k])) || (chars[k] == '-')) {
+                            if (isApprovedCharacter(chars[k])) {
                                 //if the videoHash string is null do not append new characters
                                 if (videoHash != null)
                                     videoHash = videoHash + chars[k];
@@ -100,5 +102,20 @@ public class UrlUtils {
             }
         }
         return videoHash;
+    }
+    
+    private static boolean isApprovedCharacter(char c){
+        char[] approved = new char[] {'-', '_'};
+        if(Character.isLetterOrDigit(c)){
+            return true;
+        }
+        else{
+            for(int i=0; i<approved.length;i++){
+                if(c==approved[i]){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
