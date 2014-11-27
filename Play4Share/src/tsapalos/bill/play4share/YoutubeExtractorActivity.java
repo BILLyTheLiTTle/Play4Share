@@ -125,7 +125,7 @@ public class YoutubeExtractorActivity extends Activity {
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {
                 "littleprog@gmail.com"
         });
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "[BUG] YouForce video sniffing");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "[BUG] Play4Share video sniffing");
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, exceptionLog);
         // Send it off to the Activity-Chooser
         startActivity(Intent.createChooser(emailIntent, getString(R.string.email_chooser_title)));

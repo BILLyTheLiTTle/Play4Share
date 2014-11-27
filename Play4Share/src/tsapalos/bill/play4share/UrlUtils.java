@@ -28,6 +28,7 @@ public class UrlUtils {
         // clean the stripped url from page pointers
         if (facebookUrl.lastIndexOf("/#") != -1)
             facebookUrl = facebookUrl.replaceAll("/#", "/");
+        
         if (!facebookUrl.contains(start)) {
             return facebookUrl;
         }
@@ -39,7 +40,7 @@ public class UrlUtils {
     public static String getHtmlSource(String pageUrl) throws IllegalStateException, IOException {
         HttpClient httpclient = new DefaultHttpClient(); // Create HTTP Client
         HttpGet httpget = new HttpGet(pageUrl); // Set the action you want to do
-        HttpResponse response = httpclient.execute(httpget); // Executeit
+        HttpResponse response = httpclient.execute(httpget); // Execute it
         HttpEntity entity = response.getEntity();
         InputStream is = entity.getContent(); // Create an InputStream with the
                                               // response
@@ -86,8 +87,6 @@ public class UrlUtils {
                         for (int k = 0; k < chars.length; k++) {
                             // we need letters, numbers and some special
                             // characters as a part of the video's url
-                            // TODO create an array of special characters,
-                            // approved for url usage
                             if (isApprovedCharacter(chars[k])) {
                                 // if the videoHash string is null do not append
                                 // new characters
