@@ -98,32 +98,11 @@ public class YoutubeExtractorActivity extends Activity {
                         }
                         handler.sendMessage(handler.obtainMessage(0));
                     }
-                } catch (NullPointerException e) {
+                } catch (Exception e) {
                     exceptionLog = "The URL (" + link
-                            + ") throws a NullPointerException.\nThe exception log is:\n==========\n";
+                            + ") throws "+e.getClass().toString()+".\nThe exception log is:\n==========\n";
                     exceptionLog = exceptionLog + e.getMessage() + "\n==========";
-                    handler.sendMessage(handler.obtainMessage(-1));
-                } catch (IllegalStateException e) {
-                    exceptionLog = "The URL (" + link
-                            + ") throws an IllegalStateException.\nThe exception log is:\n==========\n";
-                    exceptionLog = exceptionLog + e.getMessage() + "\n==========";
-                    handler.sendMessage(handler.obtainMessage(-1));
-                } catch (UnsupportedEncodingException e) {
-                    exceptionLog = "The URL (" + link
-                            + ") throws an UnsupportedEncodingException.\nThe exception log is:\n==========\n";
-                    exceptionLog = exceptionLog + e.getMessage() + "\n==========";
-                    handler.sendMessage(handler.obtainMessage(-1));
-                } catch (IOException e) {
-                    exceptionLog = "The URL (" + link
-                            + ") throws an IOException.\nThe exception log is:\n==========\n";
-                    exceptionLog = exceptionLog + e.getMessage() + "\n==========";
-                    handler.sendMessage(handler.obtainMessage(-1));
-                }catch (Exception e) {
-                    exceptionLog = "The URL (" + link
-                            + ") throws an unknown exception.\nThe exception log is:\n==========\n";
-                    exceptionLog = exceptionLog + e.getMessage() + "\n==========";
-                    handler.sendMessage(handler.obtainMessage(-1));
-                }
+                    handler.sendMessage(handler.obtainMessage(-1));}
             };
         }.start();
     }
