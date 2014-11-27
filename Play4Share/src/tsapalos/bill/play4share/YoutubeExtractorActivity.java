@@ -34,7 +34,7 @@ public class YoutubeExtractorActivity extends Activity {
 
         Intent intent = getIntent();
         link = intent.getDataString();
-        if (link != null){
+        if (link != null) {
             incomingURLTextView.setText(link);
             exceptionLog = "The URL (" + link
                     + ") does not throw an exception but the video cannot be played.";
@@ -98,10 +98,30 @@ public class YoutubeExtractorActivity extends Activity {
                         }
                         handler.sendMessage(handler.obtainMessage(0));
                     }
-                } catch (Exception ex) {
+                } catch (NullPointerException e) {
                     exceptionLog = "The URL (" + link
-                            + ") throws an exception.\nThe exception log is:\n==========\n";
-                    exceptionLog = exceptionLog + ex.getMessage() + "\n==========";
+                            + ") throws a NullPointerException.\nThe exception log is:\n==========\n";
+                    exceptionLog = exceptionLog + e.getMessage() + "\n==========";
+                    handler.sendMessage(handler.obtainMessage(-1));
+                } catch (IllegalStateException e) {
+                    exceptionLog = "The URL (" + link
+                            + ") throws an IllegalStateException.\nThe exception log is:\n==========\n";
+                    exceptionLog = exceptionLog + e.getMessage() + "\n==========";
+                    handler.sendMessage(handler.obtainMessage(-1));
+                } catch (UnsupportedEncodingException e) {
+                    exceptionLog = "The URL (" + link
+                            + ") throws an UnsupportedEncodingException.\nThe exception log is:\n==========\n";
+                    exceptionLog = exceptionLog + e.getMessage() + "\n==========";
+                    handler.sendMessage(handler.obtainMessage(-1));
+                } catch (IOException e) {
+                    exceptionLog = "The URL (" + link
+                            + ") throws an IOException.\nThe exception log is:\n==========\n";
+                    exceptionLog = exceptionLog + e.getMessage() + "\n==========";
+                    handler.sendMessage(handler.obtainMessage(-1));
+                }catch (Exception e) {
+                    exceptionLog = "The URL (" + link
+                            + ") throws an unknown exception.\nThe exception log is:\n==========\n";
+                    exceptionLog = exceptionLog + e.getMessage() + "\n==========";
                     handler.sendMessage(handler.obtainMessage(-1));
                 }
             };
@@ -124,7 +144,7 @@ public class YoutubeExtractorActivity extends Activity {
         // Fill it with Data
         emailIntent.setType("plain/text");
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {
-            "littleprog@gmail.com"
+                "littleprog@gmail.com"
         });
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "[BUG] YouForce video sniffing");
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, exceptionLog);
@@ -132,22 +152,15 @@ public class YoutubeExtractorActivity extends Activity {
         startActivity(Intent.createChooser(emailIntent, getString(R.string.email_chooser_title)));
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.youtube_extractor, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
+    /*
+     * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
+     * menu; this adds items to the action bar if it is present.
+     * getMenuInflater().inflate(R.menu.youtube_extractor, menu); return true; }
+     * @Override public boolean onOptionsItemSelected(MenuItem item) { // Handle
+     * action bar item clicks here. The action bar will // automatically handle
+     * clicks on the Home/Up button, so long // as you specify a parent activity
+     * in AndroidManifest.xml. int id = item.getItemId(); if (id ==
+     * R.id.action_settings) { return true; } return
+     * super.onOptionsItemSelected(item); }
+     */
 }
