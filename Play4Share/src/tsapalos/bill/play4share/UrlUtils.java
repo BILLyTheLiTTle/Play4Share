@@ -74,24 +74,27 @@ public class UrlUtils {
                     // strings
                     if (pageSource.contains(start[i])) {
                         // remove unnecessary string before the starting string
-                        videoUrl = pageSource.substring(pageSource.indexOf(start[i]));
+                        videoUrl = pageSource.substring(pageSource.indexOf(start[i])
+                                + start_advance[i]);
                         // find a possible end of the video url string
-                        videoUrl = videoUrl.substring(
-                                videoUrl.indexOf(start[i]) + start_advance[i],
-                                videoUrl.indexOf(end[j]));
+                        videoUrl = videoUrl.substring(0, videoUrl.indexOf(end[j]));
                         char[] chars = videoUrl.toCharArray();
-                        //check every character if it a part of video's url
+                        // check every character if it a part of video's url
                         for (int k = 0; k < chars.length; k++) {
-                            //we need letters, numbers and some special characters as a part of the video's url
-                            //TODO create an array of special characters, approved for url usage
+                            // we need letters, numbers and some special
+                            // characters as a part of the video's url
+                            // TODO create an array of special characters,
+                            // approved for url usage
                             if (isApprovedCharacter(chars[k])) {
-                                //if the videoHash string is null do not append new characters
+                                // if the videoHash string is null do not append
+                                // new characters
                                 if (videoHash != null)
                                     videoHash = videoHash + chars[k];
                                 else
                                     videoHash = String.valueOf(chars[k]);
                             }
-                            //finish the url construction if any non-specified character found
+                            // finish the url construction if any non-specified
+                            // character found
                             else {
                                 Log.e("HASH", videoHash);
                                 break;
@@ -103,15 +106,17 @@ public class UrlUtils {
         }
         return videoHash;
     }
-    
-    private static boolean isApprovedCharacter(char c){
-        char[] approved = new char[] {'-', '_'};
-        if(Character.isLetterOrDigit(c)){
+
+    private static boolean isApprovedCharacter(char c) {
+        char[] approved = new char[] {
+                '-', '_'
+        };
+        if (Character.isLetterOrDigit(c)) {
             return true;
         }
-        else{
-            for(int i=0; i<approved.length;i++){
-                if(c==approved[i]){
+        else {
+            for (int i = 0; i < approved.length; i++) {
+                if (c == approved[i]) {
                     return true;
                 }
             }
