@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,19 +20,19 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 public class UrlUtils {
-    public static String getRawPageUrl(String facebookUrl) {
-        String start = ".php?u=";
+    public static String getRawPageUrl(String facebookUrl) throws UnsupportedEncodingException {
+        String start = "u=";
         String end = "&h=";
-        if (!(facebookUrl.contains(start) && facebookUrl.contains(end))) {
-            // clean the stripped url from page pointers
-            if (facebookUrl.lastIndexOf("/#") != -1)
-                facebookUrl = facebookUrl.replaceAll("/#", "/");
+        //decode URL special characters
+        facebookUrl=URLDecoder.decode(facebookUrl, "UTF-8");
+        // clean the stripped url from page pointers
+        if (facebookUrl.lastIndexOf("/#") != -1)
+            facebookUrl = facebookUrl.replaceAll("/#", "/");
+        if (!facebookUrl.contains(start)) {
             return facebookUrl;
         }
-        String rawURL = facebookUrl.substring(facebookUrl.indexOf(start) + 7,
+        String rawURL = facebookUrl.substring(facebookUrl.indexOf(start) + 2,
                 facebookUrl.indexOf(end));
-        rawURL = rawURL.replaceAll("%3A", ":");
-        rawURL = rawURL.replaceAll("%2F", "/");
         return rawURL;
     }
 

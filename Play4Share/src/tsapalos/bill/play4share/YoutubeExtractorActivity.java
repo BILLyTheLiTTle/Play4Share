@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,7 +86,7 @@ public class YoutubeExtractorActivity extends Activity {
                     if (link != null) {
                         handler.sendMessage(handler.obtainMessage(3));
                         String raw = UrlUtils.getRawPageUrl(link);
-                        // Log.e("RAW", raw);
+                        Log.e("RAW", raw);
                         handler.sendMessage(handler.obtainMessage(2));
                         htmlSource = UrlUtils.getHtmlSource(raw);
                         // Log.e("PAGE", htmlSource);
