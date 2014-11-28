@@ -33,7 +33,17 @@ public class YoutubeExtractorActivity extends Activity {
         play = (Button) findViewById(R.id.play_button);
 
         Intent intent = getIntent();
-        link = intent.getDataString();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        //respond to share intent
+        /*if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
+            link = intent.getStringExtra(Intent.EXTRA_TEXT);
+        }
+        else {
+            link = intent.getDataString();
+        }*/
+        link = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (link != null) {
             incomingURLTextView.setText(link);
             exceptionLog = "The URL (" + link
@@ -100,9 +110,11 @@ public class YoutubeExtractorActivity extends Activity {
                     }
                 } catch (Exception e) {
                     exceptionLog = "The URL (" + link
-                            + ") throws "+e.getClass().toString()+".\nThe exception log is:\n==========\n";
+                            + ") throws " + e.getClass().toString()
+                            + ".\nThe exception log is:\n==========\n";
                     exceptionLog = exceptionLog + e.getMessage() + "\n==========";
-                    handler.sendMessage(handler.obtainMessage(-1));}
+                    handler.sendMessage(handler.obtainMessage(-1));
+                }
             };
         }.start();
     }
@@ -125,7 +137,8 @@ public class YoutubeExtractorActivity extends Activity {
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] {
                 "littleprog@gmail.com"
         });
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "[BUG] Play4Share video sniffing");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+                "[BUG] Play4Share video sniffing");
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, exceptionLog);
         // Send it off to the Activity-Chooser
         startActivity(Intent.createChooser(emailIntent, getString(R.string.email_chooser_title)));
