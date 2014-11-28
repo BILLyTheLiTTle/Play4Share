@@ -62,7 +62,7 @@ public class YoutubeExtractorActivity extends Activity {
                     play.setText(txt);
                 }
                 else if (msg.what == 0) {
-                    youtubeVideoURLTextView.setText("https://www.youtube.com/watch?v=" + videoUrl);
+                    youtubeVideoURLTextView.setText(videoUrl);
                     String txt = getString(R.string.play);
                     play.setText(txt);
                     play.setEnabled(true);
@@ -108,7 +108,7 @@ public class YoutubeExtractorActivity extends Activity {
     }
 
     public void play(View view) {
-        String url = "https://www.youtube.com/watch?v=" + videoUrl;
+        String url = videoUrl;
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);

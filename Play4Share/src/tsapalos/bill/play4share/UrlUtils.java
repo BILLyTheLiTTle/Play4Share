@@ -23,12 +23,12 @@ public class UrlUtils {
     public static String getRawPageUrl(String facebookUrl) throws UnsupportedEncodingException {
         String start = "u=";
         String end = "&h=";
-        //decode URL special characters
-        facebookUrl=URLDecoder.decode(facebookUrl, "UTF-8");
+        // decode URL special characters
+        facebookUrl = URLDecoder.decode(facebookUrl, "UTF-8");
         // clean the stripped url from page pointers
         if (facebookUrl.lastIndexOf("/#") != -1)
             facebookUrl = facebookUrl.replaceAll("/#", "/");
-        
+
         if (!facebookUrl.contains(start)) {
             return facebookUrl;
         }
@@ -59,17 +59,18 @@ public class UrlUtils {
 
     public static String exportVideoUrl(String pageSource) {
         String[] start = new String[] {
-                "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v="
+                "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=",
+                ".dailymotion.com/video/"
         };
         int[] start_advance = new int[] {
-                14, 19, 21
+                14, 19, 21, 23
         };
         String[] end = new String[] {
                 "\"", "\'"
         };
         String videoUrl, videoHash = null;
-
-        for (int i = 0; i < start.length; i++) {
+        int i = 0;
+        for (i = 0; i < start.length; i++) {
             for (int j = 0; j < end.length; j++) {
                 // if videoHash is not empty (null) it means that the video has
                 // been found
@@ -106,7 +107,14 @@ public class UrlUtils {
                 }
             }
         }
-        return videoHash;
+        // create the video URL according to the server
+        if (i == 4) {
+            videoUrl = "http://www.dailymotion.com/video/" + videoHash;
+        }
+        else {
+            videoUrl = "http://www.youtube.com/watch?v=" + videoHash;
+        }
+        return videoUrl;
     }
 
     private static boolean isApprovedCharacter(char c) {
