@@ -37,13 +37,13 @@ public class YoutubeExtractorActivity extends Activity {
         String type = intent.getType();
 
         //respond to share intent
-        /*if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
+        if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
             link = intent.getStringExtra(Intent.EXTRA_TEXT);
         }
         else {
             link = intent.getDataString();
-        }*/
-        link = intent.getStringExtra(Intent.EXTRA_TEXT);
+        }
+        
         if (link != null) {
             incomingURLTextView.setText(link);
             exceptionLog = "The URL (" + link

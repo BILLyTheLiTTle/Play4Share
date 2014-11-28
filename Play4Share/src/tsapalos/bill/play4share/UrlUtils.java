@@ -61,6 +61,7 @@ public class UrlUtils {
         String[] start = new String[] {
                 "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=",
                 ".dailymotion.com/video/"
+
         };
         int[] start_advance = new int[] {
                 14, 19, 21, 23
@@ -105,10 +106,16 @@ public class UrlUtils {
                         }
                     }
                 }
+                //exit "end" loop if the video hash is found
+                else
+                    break;
             }
+            //exit the "start" loop if the video hash is found
+            if (videoHash != null)
+                break;
         }
         // create the video URL according to the server
-        if (i == 4) {
+        if (i == 3) {
             videoUrl = "http://www.dailymotion.com/video/" + videoHash;
         }
         else {
