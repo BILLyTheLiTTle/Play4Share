@@ -4,8 +4,8 @@
     <string name="app_name">Play4Share</string>
     <string name="incoming_url">Incoming URL:</string>
     <string name="incoming_url_content">Incoming URL should appear here!</string>
-    <string name="youtube_video_url">Youtube Video URL:</string>
-    <string name="youtube_video_url_content">Youtube Video URL should appear here!</string>
+    <string name="video_url">Video URL:</string>
+    <string name="video_url_content">Video URL should appear here!</string>
     <string name="play">Play</string>
     <string name="bug_report">Report bug</string>
     <string name="exit">Exit</string>

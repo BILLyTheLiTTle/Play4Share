@@ -29,7 +29,7 @@ public class YoutubeExtractorActivity extends Activity {
         setContentView(R.layout.activity_youtube_extractor);
 
         incomingURLTextView = (TextView) findViewById(R.id.incoming_url_content_textview);
-        youtubeVideoURLTextView = (TextView) findViewById(R.id.youtube_video_url_content_textview);
+        youtubeVideoURLTextView = (TextView) findViewById(R.id.video_url_content_textview);
         play = (Button) findViewById(R.id.play_button);
 
         Intent intent = getIntent();
