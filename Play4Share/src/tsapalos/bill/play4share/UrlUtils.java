@@ -60,11 +60,11 @@ public class UrlUtils {
     public static String exportVideoUrl(String pageSource) {
         String[] start = new String[] {
                 "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=",
-                ".dailymotion.com/video/","liveleak.com/ll_embed?f="
+                ".dailymotion.com/video/", "liveleak.com/ll_embed?f=", "player.vimeo.com/video/"
 
         };
         int[] start_advance = new int[] {
-                14, 19, 21, 23, 24
+                14, 19, 21, 23, 24, 23
         };
         String[] end = new String[] {
                 "\"", "\'"
@@ -106,11 +106,11 @@ public class UrlUtils {
                         }
                     }
                 }
-                //exit "end" loop if the video hash is found
+                // exit "end" loop if the video hash is found
                 else
                     break;
             }
-            //exit the "start" loop if the video hash is found
+            // exit the "start" loop if the video hash is found
             if (videoHash != null)
                 break;
         }
@@ -118,8 +118,11 @@ public class UrlUtils {
         if (i == 3) {
             videoUrl = "http://www.dailymotion.com/video/" + videoHash;
         }
-        else if (i == 4){
+        else if (i == 4) {
             videoUrl = "http://www.liveleak.com/ll_embed?f=" + videoHash;
+        }
+        else if (i == 5) {
+            videoUrl = "http://player.vimeo.com/video/" + videoHash;
         }
         else {
             videoUrl = "http://www.youtube.com/watch?v=" + videoHash;
