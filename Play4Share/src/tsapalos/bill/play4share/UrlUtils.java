@@ -60,11 +60,11 @@ public class UrlUtils {
     public static String exportVideoUrl(String pageSource) {
         String[] start = new String[] {
                 "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=",
-                ".dailymotion.com/video/"
+                ".dailymotion.com/video/","liveleak.com/ll_embed?f="
 
         };
         int[] start_advance = new int[] {
-                14, 19, 21, 23
+                14, 19, 21, 23, 24
         };
         String[] end = new String[] {
                 "\"", "\'"
@@ -117,6 +117,9 @@ public class UrlUtils {
         // create the video URL according to the server
         if (i == 3) {
             videoUrl = "http://www.dailymotion.com/video/" + videoHash;
+        }
+        else if (i == 4){
+            videoUrl = "http://www.liveleak.com/ll_embed?f=" + videoHash;
         }
         else {
             videoUrl = "http://www.youtube.com/watch?v=" + videoHash;
