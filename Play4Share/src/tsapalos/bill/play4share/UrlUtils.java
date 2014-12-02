@@ -57,7 +57,7 @@ public class UrlUtils {
         return resString;
     }
 
-    public static String exportVideoUrl(String pageSource) {
+    public static String exportVideoUrl(String pageSource) throws NullPointerException {
         String[] start = new String[] {
                 "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=",
                 ".dailymotion.com/video/", "liveleak.com/ll_embed?f=", "player.vimeo.com/video/"
@@ -69,7 +69,7 @@ public class UrlUtils {
         String[] end = new String[] {
                 "\"", "\'"
         };
-        String videoUrl, videoHash = null;
+        String videoUrl = null, videoHash = null;
         int i = 0;
         for (i = 0; i < start.length; i++) {
             for (int j = 0; j < end.length; j++) {
@@ -114,18 +114,24 @@ public class UrlUtils {
             if (videoHash != null)
                 break;
         }
+        // throw exception if the video is not found
+        if (videoUrl == null) {
+            throw new NullPointerException("The video URL is null!");
+        }
         // create the video URL according to the server
-        if (i == 3) {
-            videoUrl = "http://www.dailymotion.com/video/" + videoHash;
-        }
-        else if (i == 4) {
-            videoUrl = "http://www.liveleak.com/ll_embed?f=" + videoHash;
-        }
-        else if (i == 5) {
-            videoUrl = "http://player.vimeo.com/video/" + videoHash;
-        }
-        else {
-            videoUrl = "http://www.youtube.com/watch?v=" + videoHash;
+        switch (i) {
+            case 3:
+                videoUrl = "http://www.dailymotion.com/video/" + videoHash;
+                break;
+            case 4:
+                videoUrl = "http://www.liveleak.com/ll_embed?f=" + videoHash;
+                break;
+            case 5:
+                videoUrl = "http://player.vimeo.com/video/" + videoHash;
+                break;
+            default:
+                videoUrl = "http://www.youtube.com/watch?v=" + videoHash;
+                break;
         }
         return videoUrl;
     }
