@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,18 +62,20 @@ public class UrlUtils {
     }
 
     public static String exportVideoUrl(String pageSource) throws NullPointerException {
-        String[] start = new String[] {
+        final String youtube = "YouTube", dailymotion = "Dailymotion", liveleak = "LiveLeak", vimeo = "Vimeo";
+        Map<String, List<Integer>> indices = new HashMap<String, List<Integer>>(5);
+        final String[] start = new String[] {
                 "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=",
                 ".dailymotion.com/video/", "liveleak.com/ll_embed?f=", "player.vimeo.com/video/"
 
         };
-        int[] start_advance = new int[] {
+        final int[] start_advance = new int[] {
                 14, 19, 21, 23, 24, 23
         };
-        String[] end = new String[] {
+        final String[] end = new String[] {
                 "\"", "\'"
         };
-        String videosUrls = null, videosIds = null;
+        String videosUrls = null, videosIds = null, server=null;
         int i = 0;
         for (i = 0; i < start.length; i++) {
             for (int j = 0; j < end.length; j++) {
@@ -79,16 +85,36 @@ public class UrlUtils {
                 // make sure that the html code has one of the starting
                 // strings
                 if (pageSource.contains(start[i])) {
-                    // TODO find all occurences of the specific string and store
-                    // them into a list
-                    
-                    //TODO for every occurence sniff the possible url of the video 
-                    
-                    //TODO for every possible url video sniff the video id
-                    
-                    //TODO store every video id in a list
-                    
-                    
+                    // find all occurrences of the specific string
+                    int index = pageSource.indexOf(start[i]);
+                    while (index >= 0) {
+                        if (i == 0 || i == 1 || i == 2) {
+                            server=youtube;
+                        }
+                        else if (i == 3) {
+                            server=dailymotion;
+                        }
+                        else if (i == 4) {
+                            server=liveleak;
+                        }
+                        else if (i == 5) {
+                            server=vimeo;
+                        }
+                        List<Integer> currentValue = indices.get(server);
+                        if (currentValue == null) {
+                            currentValue = new ArrayList<Integer>();
+                            indices.put(server, currentValue);
+                        }
+                        currentValue.add(Integer.valueOf(index));
+                        index = pageSource.indexOf(start[i], index + 1);
+                    }
+                    // TODO for every occurrence sniff the possible url of the
+                    // video
+
+                    // TODO for every possible url video sniff the video id
+
+                    // TODO store every video id in a list
+
                     // remove unnecessary string before the starting string
                     videosUrls = pageSource.substring(pageSource.indexOf(start[i])
                             + start_advance[i]);
@@ -121,29 +147,29 @@ public class UrlUtils {
                 // break;
             }
             // exit the "start" loop if the video hash is found
-            if (videoHash != null)
+            if (videosIds != null)
                 break;
         }
         // throw exception if the video is not found
-        if (videoUrl == null) {
+        if (videosUrls == null) {
             throw new NullPointerException("The video URL is null!");
         }
         // create the video URL according to the server
         switch (i) {
             case 3:
-                videoUrl = "http://www.dailymotion.com/video/" + videoHash;
+                videosUrls = "http://www.dailymotion.com/video/" + videosIds;
                 break;
             case 4:
-                videoUrl = "http://www.liveleak.com/ll_embed?f=" + videoHash;
+                videosUrls = "http://www.liveleak.com/ll_embed?f=" + videosIds;
                 break;
             case 5:
-                videoUrl = "http://player.vimeo.com/video/" + videoHash;
+                videosUrls = "http://player.vimeo.com/video/" + videosIds;
                 break;
             default:
-                videoUrl = "http://www.youtube.com/watch?v=" + videoHash;
+                videosUrls = "http://www.youtube.com/watch?v=" + videosIds;
                 break;
         }
-        return videoUrl;
+        return videosUrls;
     }
 
     private static boolean isApprovedCharacter(char c) {
