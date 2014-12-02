@@ -69,46 +69,56 @@ public class UrlUtils {
         String[] end = new String[] {
                 "\"", "\'"
         };
-        String videoUrl = null, videoHash = null;
+        String videosUrls = null, videosIds = null;
         int i = 0;
         for (i = 0; i < start.length; i++) {
             for (int j = 0; j < end.length; j++) {
                 // if videoHash is not empty (null) it means that the video has
                 // been found
-                if (videoHash == null) {
-                    // make sure that the html code has one of the starting
-                    // strings
-                    if (pageSource.contains(start[i])) {
-                        // remove unnecessary string before the starting string
-                        videoUrl = pageSource.substring(pageSource.indexOf(start[i])
-                                + start_advance[i]);
-                        // find a possible end of the video url string
-                        videoUrl = videoUrl.substring(0, videoUrl.indexOf(end[j]));
-                        char[] chars = videoUrl.toCharArray();
-                        // check every character if it a part of video's url
-                        for (int k = 0; k < chars.length; k++) {
-                            // we need letters, numbers and some special
-                            // characters as a part of the video's url
-                            if (isApprovedCharacter(chars[k])) {
-                                // if the videoHash string is null do not append
-                                // new characters
-                                if (videoHash != null)
-                                    videoHash = videoHash + chars[k];
-                                else
-                                    videoHash = String.valueOf(chars[k]);
-                            }
-                            // finish the url construction if any non-specified
-                            // character found
-                            else {
-                                Log.e("HASH", videoHash);
-                                break;
-                            }
+                // if (videoHash == null) {
+                // make sure that the html code has one of the starting
+                // strings
+                if (pageSource.contains(start[i])) {
+                    // TODO find all occurences of the specific string and store
+                    // them into a list
+                    
+                    //TODO for every occurence sniff the possible url of the video 
+                    
+                    //TODO for every possible url video sniff the video id
+                    
+                    //TODO store every video id in a list
+                    
+                    
+                    // remove unnecessary string before the starting string
+                    videosUrls = pageSource.substring(pageSource.indexOf(start[i])
+                            + start_advance[i]);
+                    // find a possible end of the video url string
+                    videosUrls = videosUrls.substring(0, videosUrls.indexOf(end[j]));
+                    char[] chars = videosUrls.toCharArray();
+                    // check every character if it a part of video's url
+                    for (int k = 0; k < chars.length; k++) {
+                        // we need letters, numbers and some special
+                        // characters as a part of the video's url
+                        if (isApprovedCharacter(chars[k])) {
+                            // if the videoHash string is null do not append
+                            // new characters
+                            if (videosIds != null)
+                                videosIds = videosIds + chars[k];
+                            else
+                                videosIds = String.valueOf(chars[k]);
+                        }
+                        // finish the url construction if any non-specified
+                        // character found
+                        else {
+                            Log.e("HASH", videosIds);
+                            break;
                         }
                     }
                 }
+                // }
                 // exit "end" loop if the video hash is found
-                else
-                    break;
+                // else
+                // break;
             }
             // exit the "start" loop if the video hash is found
             if (videoHash != null)
