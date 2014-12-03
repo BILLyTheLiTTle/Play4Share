@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 public class YoutubeExtractorActivity extends Activity {
 
-    private TextView incomingURLTextView, youtubeVideoURLTextView;
+    private TextView incomingURLTextView, primaryVideoUrlTextView;
     private Button play;
 
     private String htmlSource, link, exceptionLog;
@@ -33,7 +33,7 @@ public class YoutubeExtractorActivity extends Activity {
         setContentView(R.layout.activity_youtube_extractor);
 
         incomingURLTextView = (TextView) findViewById(R.id.incoming_url_content_textview);
-        youtubeVideoURLTextView = (TextView) findViewById(R.id.video_url_content_textview);
+        primaryVideoUrlTextView = (TextView) findViewById(R.id.video_url_content_textview);
         play = (Button) findViewById(R.id.play_button);
 
         Intent intent = getIntent();
@@ -67,7 +67,7 @@ public class YoutubeExtractorActivity extends Activity {
                     play.setText(txt);
                 }
                 else if (msg.what == 2) {
-                    youtubeVideoURLTextView.setText(R.string.searching);
+                    primaryVideoUrlTextView.setText(R.string.searching);
                     String txt = getString(R.string.play) + " (2)";
                     play.setText(txt);
                 }
@@ -76,7 +76,7 @@ public class YoutubeExtractorActivity extends Activity {
                     play.setText(txt);
                 }
                 else if (msg.what == 0) {
-                    youtubeVideoURLTextView.setText(videosUrls.get(0));
+                    primaryVideoUrlTextView.setText(videosUrls.get(0));
                     String txt = getString(R.string.play);
                     play.setText(txt);
                     play.setEnabled(true);
@@ -85,7 +85,7 @@ public class YoutubeExtractorActivity extends Activity {
                     Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
                 }
                 else if (msg.what == -1) {
-                    youtubeVideoURLTextView.setText(R.string.not_found);
+                    primaryVideoUrlTextView.setText(R.string.not_found);
                     String txt = getString(R.string.play);
                     play.setText(txt);
                     String toast = String.format(getString(R.string.error_toast),
