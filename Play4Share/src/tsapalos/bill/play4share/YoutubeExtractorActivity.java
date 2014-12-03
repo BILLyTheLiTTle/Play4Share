@@ -23,7 +23,8 @@ public class YoutubeExtractorActivity extends Activity {
 
     private TextView incomingURLTextView, primaryVideoUrlTextView;
     private TextView[] secondaryVideoUrlTextViews;
-    private Button play;
+    private Button playPrimaryVideo;
+    private Button[] playSecondaryVideos;
 
     private String htmlSource, link, exceptionLog;
 
@@ -36,7 +37,7 @@ public class YoutubeExtractorActivity extends Activity {
 
         incomingURLTextView = (TextView) findViewById(R.id.incoming_url_content_textview);
         primaryVideoUrlTextView = (TextView) findViewById(R.id.video_url_content_textview);
-        play = (Button) findViewById(R.id.play_button);
+        playPrimaryVideo = (Button) findViewById(R.id.primary_play_button);
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -66,29 +67,42 @@ public class YoutubeExtractorActivity extends Activity {
                 super.handleMessage(msg);
                 if (msg.what == 3) {
                     String txt = getString(R.string.play) + " (3)";
-                    play.setText(txt);
+                    playPrimaryVideo.setText(txt);
                 }
                 else if (msg.what == 2) {
                     primaryVideoUrlTextView.setText(R.string.searching);
                     String txt = getString(R.string.play) + " (2)";
-                    play.setText(txt);
+                    playPrimaryVideo.setText(txt);
                 }
                 else if (msg.what == 1) {
                     String txt = getString(R.string.play) + " (1)";
-                    play.setText(txt);
+                    playPrimaryVideo.setText(txt);
                 }
                 else if (msg.what == 0) {
                     int videosSum = videosUrls.size();
                     primaryVideoUrlTextView.setText(videosUrls.get(0));
                     String txt = getString(R.string.play);
-                    play.setText(txt);
-                    play.setEnabled(true);
+                    playPrimaryVideo.setText(txt);
+                    playPrimaryVideo.setEnabled(true);
                     LinearLayout parent = (LinearLayout) findViewById(R.id.internal_layout);
                     secondaryVideoUrlTextViews = new TextView[videosSum - 1];
+                    playSecondaryVideos = new Button[videosSum - 1];
                     for(int i=0; i<videosSum-1;i++){
                         secondaryVideoUrlTextViews[i]=new TextView(YoutubeExtractorActivity.this);
+                        playSecondaryVideos[i]=new Button(YoutubeExtractorActivity.this);
                         secondaryVideoUrlTextViews[i].setText(videosUrls.get(i+1));
+                        playSecondaryVideos[i].setId(i);
+                        playSecondaryVideos[i].setText(R.string.play);
+                        playSecondaryVideos[i].setOnClickListener(new View.OnClickListener() {
+                            
+                            @Override
+                            public void onClick(View v) {
+                                play(v);
+                                
+                            }
+                        });
                         parent.addView(secondaryVideoUrlTextViews[i]);
+                        parent.addView(playSecondaryVideos[i]);
                     }
 
                     String toast = String.format(getString(R.string.ok_toast),
@@ -98,7 +112,7 @@ public class YoutubeExtractorActivity extends Activity {
                 else if (msg.what == -1) {
                     primaryVideoUrlTextView.setText(R.string.not_found);
                     String txt = getString(R.string.play);
-                    play.setText(txt);
+                    playPrimaryVideo.setText(txt);
                     String toast = String.format(getString(R.string.error_toast),
                             getString(R.string.bug_report));
                     Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
@@ -132,7 +146,14 @@ public class YoutubeExtractorActivity extends Activity {
     }
 
     public void play(View view) {
-        String url = videosUrls.get(0);
+        String url;
+        if(view.getId()<videosUrls.size()){
+            url = videosUrls.get(view.getId()+1);
+        }
+        else{
+            url = videosUrls.get(0);
+        }
+        
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);

@@ -48,7 +48,7 @@
             android:text="@string/video_url_content" />
 
         <Button
-            android:id="@+id/play_button"
+            android:id="@+id/primary_play_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -64,14 +64,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="vertical" 
-            android:layout_below="@+id/play_button">
+            android:layout_below="@+id/primary_play_button">
         </LinearLayout>
 
         <Button
             android:id="@+id/exit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/play_button"
+            android:layout_below="@+id/internal_layout"
             android:layout_marginTop="50dp"
             android:onClick="exit"
             android:text="@string/exit" />
