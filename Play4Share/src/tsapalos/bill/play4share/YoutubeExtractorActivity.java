@@ -1,6 +1,8 @@
 
 package tsapalos.bill.play4share;
 
+import java.util.List;
+
 import tsapalos.bill.play4share.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -21,7 +23,9 @@ public class YoutubeExtractorActivity extends Activity {
     private TextView incomingURLTextView, youtubeVideoURLTextView;
     private Button play;
 
-    private String htmlSource, link, exceptionLog, videoUrl = null;
+    private String htmlSource, link, exceptionLog;
+    
+    private List<String> videosUrls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,7 @@ public class YoutubeExtractorActivity extends Activity {
                     play.setText(txt);
                 }
                 else if (msg.what == 0) {
-                    youtubeVideoURLTextView.setText(videoUrl);
+                    youtubeVideoURLTextView.setText(videosUrls.get(0));
                     String txt = getString(R.string.play);
                     play.setText(txt);
                     play.setEnabled(true);
@@ -101,7 +105,7 @@ public class YoutubeExtractorActivity extends Activity {
                         htmlSource = UrlUtils.getHtmlSource(raw);
                         // Log.e("PAGE", htmlSource);
                         handler.sendMessage(handler.obtainMessage(1));
-                        videoUrl = UrlUtils.exportVideoUrl(htmlSource);
+                        videosUrls = UrlUtils.exportVideoUrl(htmlSource);
                         // Log.e("VIDEO", videoUrl);
                         handler.sendMessage(handler.obtainMessage(0));
                     }
@@ -117,7 +121,7 @@ public class YoutubeExtractorActivity extends Activity {
     }
 
     public void play(View view) {
-        String url = videoUrl;
+        String url = videosUrls.get(0);
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);

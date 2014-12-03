@@ -61,7 +61,7 @@ public class UrlUtils {
         return resString;
     }
 
-    public static String exportVideoUrl(String pageSource) throws NullPointerException {
+    public static List<String> exportVideoUrl(String pageSource) throws NullPointerException {
         final String youtube = "YouTube", dailymotion = "Dailymotion", liveleak = "LiveLeak", vimeo = "Vimeo";
         Map<String, List<String>> indices = new HashMap<String, List<String>>(3);
         final String[] start = new String[] {
@@ -121,6 +121,8 @@ public class UrlUtils {
                 }
             }
         }
+        // create the lsit with all videos' urls
+        List<String> videosUrls=new ArrayList<String>(3);
         // convert every video id to appropriate url
         for (Map.Entry<String, List<String>> entry : indices.entrySet()) {
             Log.e("BREAKPOINT", "HERE " + (entry == null));
@@ -134,8 +136,8 @@ public class UrlUtils {
                             videoId = videosIds.get(j);
                             videosIds.set(j, "http://www.dailymotion.com/video/" + videoId);
                             Log.e("DAILYMOTION-" + j, videosIds.get(j));
-                            // return the first video found
-                            return videosIds.get(j);
+                            // add the url to the total list
+                            videosUrls.add(videosIds.get(j));
                         }
                         break;
                     case liveleak:
@@ -143,8 +145,8 @@ public class UrlUtils {
                             videoId = videosIds.get(j);
                             videosIds.set(j, "http://www.liveleak.com/ll_embed?f=" + videoId);
                             Log.e("LIVELEAK-" + j, videosIds.get(j));
-                            // return the first video found
-                            return videosIds.get(j);
+                            // add the url to the total list
+                            videosUrls.add(videosIds.get(j));
                         }
                         break;
                     case vimeo:
@@ -152,8 +154,8 @@ public class UrlUtils {
                             videoId = videosIds.get(j);
                             videosIds.set(j, "http://player.vimeo.com/video/" + videoId);
                             Log.e("VIMEO-" + j, videosIds.get(j));
-                            // return the first video found
-                            return videosIds.get(j);
+                            // add the url to the total list
+                            videosUrls.add(videosIds.get(j));
                         }
                         break;
                     default:
@@ -161,8 +163,8 @@ public class UrlUtils {
                             videoId = videosIds.get(j);
                             videosIds.set(j, "http://www.youtube.com/watch?v=" + videoId);
                             Log.e("YOUTUBE-" + j, videosIds.get(j));
-                            // return the first video found
-                            return videosIds.get(j);
+                            // add the url to the total list
+                            videosUrls.add(videosIds.get(j));
                         }
                         break;
                 }
@@ -172,10 +174,7 @@ public class UrlUtils {
         if (!found) {
             throw new NullPointerException("No videos found");
         }
-        else {
-            // TODO return a list with all the videos' urls ready to play
-        }
-        return videoUrl;
+        return videosUrls;
     }
 
     private static String retrieveVideoId(String videoUrl) {
