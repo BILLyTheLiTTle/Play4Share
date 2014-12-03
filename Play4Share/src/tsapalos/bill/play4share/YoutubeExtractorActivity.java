@@ -15,16 +15,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class YoutubeExtractorActivity extends Activity {
 
     private TextView incomingURLTextView, primaryVideoUrlTextView;
+    private TextView[] secondaryVideoUrlTextViews;
     private Button play;
 
     private String htmlSource, link, exceptionLog;
-    
+
     private List<String> videosUrls;
 
     @Override
@@ -40,14 +42,14 @@ public class YoutubeExtractorActivity extends Activity {
         String action = intent.getAction();
         String type = intent.getType();
 
-        //respond to share intent
+        // respond to share intent
         if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
             link = intent.getStringExtra(Intent.EXTRA_TEXT);
         }
         else {
             link = intent.getDataString();
         }
-        
+
         if (link != null) {
             incomingURLTextView.setText(link);
             exceptionLog = "The URL (" + link
@@ -76,10 +78,19 @@ public class YoutubeExtractorActivity extends Activity {
                     play.setText(txt);
                 }
                 else if (msg.what == 0) {
+                    int videosSum = videosUrls.size();
                     primaryVideoUrlTextView.setText(videosUrls.get(0));
                     String txt = getString(R.string.play);
                     play.setText(txt);
                     play.setEnabled(true);
+                    LinearLayout parent = (LinearLayout) findViewById(R.id.internal_layout);
+                    secondaryVideoUrlTextViews = new TextView[videosSum - 1];
+                    for(int i=0; i<videosSum-1;i++){
+                        secondaryVideoUrlTextViews[i]=new TextView(YoutubeExtractorActivity.this);
+                        secondaryVideoUrlTextViews[i].setText(videosUrls.get(i+1));
+                        parent.addView(secondaryVideoUrlTextViews[i]);
+                    }
+
                     String toast = String.format(getString(R.string.ok_toast),
                             getString(R.string.play));
                     Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();

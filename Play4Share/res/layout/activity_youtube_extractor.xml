@@ -49,23 +49,23 @@
 
         <Button
             android:id="@+id/play_button"
-            android:enabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/video_url_content_textview"
-            android:layout_marginTop="50dp"
-            android:text="@string/play"
-            android:onClick="play" />
+            android:layout_marginTop="2dp"
+            android:enabled="false"
+            android:onClick="play"
+            android:text="@string/play" />
 
-        <Button
-            android:id="@+id/bug_report_button"
+        <LinearLayout
+            android:id="@+id/internal_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/play_button"
-            android:layout_alignParentRight="true"
-            android:text="@string/bug_report"
-            android:onClick="reportBug" />
+            android:layout_marginTop="10dp"
+            android:orientation="vertical" 
+            android:layout_below="@+id/play_button">
+        </LinearLayout>
 
         <Button
             android:id="@+id/exit_button"
@@ -73,8 +73,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/play_button"
             android:layout_marginTop="50dp"
-            android:text="@string/exit"
-            android:onClick="exit" />
+            android:onClick="exit"
+            android:text="@string/exit" />
+
+        <Button
+            android:id="@+id/bug_report_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/exit_button"
+            android:layout_alignParentRight="true"
+            android:onClick="reportBug"
+            android:text="@string/bug_report" />
     </RelativeLayout>
 
 </ScrollView>
