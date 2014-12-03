@@ -22,6 +22,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+<<<<<<< HEAD
+=======
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+>>>>>>> development
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -68,82 +78,145 @@ public class UrlUtils {
     }
 
     public static String exportVideoUrl(String pageSource) throws NullPointerException {
-        String[] start = new String[] {
+        final String youtube = "YouTube", dailymotion = "Dailymotion", liveleak = "LiveLeak", vimeo = "Vimeo";
+        Map<String, List<String>> indices = new HashMap<String, List<String>>(3);
+        final String[] start = new String[] {
                 "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=",
                 ".dailymotion.com/video/", "liveleak.com/ll_embed?f=", "player.vimeo.com/video/"
 
         };
-        int[] start_advance = new int[] {
+        final int[] start_advance = new int[] {
                 14, 19, 21, 23, 24, 23
         };
-        String[] end = new String[] {
+        final String[] end = new String[] {
                 "\"", "\'"
         };
-        String videoUrl = null, videoHash = null;
-        int i = 0;
-        for (i = 0; i < start.length; i++) {
+        String videoUrl = null, videoId = null, server = null;
+        boolean found = false;
+
+        for (int i = 0; i < start.length; i++) {
             for (int j = 0; j < end.length; j++) {
-                // if videoHash is not empty (null) it means that the video has
-                // been found
-                if (videoHash == null) {
-                    // make sure that the html code has one of the starting
-                    // strings
-                    if (pageSource.contains(start[i])) {
-                        // remove unnecessary string before the starting string
-                        videoUrl = pageSource.substring(pageSource.indexOf(start[i])
-                                + start_advance[i]);
-                        // find a possible end of the video url string
+                if (pageSource.contains(start[i])) {
+                    // find all occurrences of the specific string
+                    int index = pageSource.indexOf(start[i]);
+                    while (index >= 0) {
+                        // sniff the possible start of the url of the
+                        // video
+                        videoUrl = pageSource.substring(index + start_advance[i]);
+                        // sniff the possible end of the url of the
+                        // video
                         videoUrl = videoUrl.substring(0, videoUrl.indexOf(end[j]));
-                        char[] chars = videoUrl.toCharArray();
-                        // check every character if it a part of video's url
-                        for (int k = 0; k < chars.length; k++) {
-                            // we need letters, numbers and some special
-                            // characters as a part of the video's url
-                            if (isApprovedCharacter(chars[k])) {
-                                // if the videoHash string is null do not append
-                                // new characters
-                                if (videoHash != null)
-                                    videoHash = videoHash + chars[k];
-                                else
-                                    videoHash = String.valueOf(chars[k]);
+                        videoId = retrieveVideoId(videoUrl);
+                        // store every video id found
+                        if (videoId != null) {
+                            switch (i) {
+                                case 3:
+                                    server = dailymotion;
+                                    break;
+                                case 4:
+                                    server = liveleak;
+                                    break;
+                                case 5:
+                                    server = vimeo;
+                                    break;
+                                default:
+                                    server = youtube;
+                                    break;
                             }
-                            // finish the url construction if any non-specified
-                            // character found
-                            else {
-                                Log.e("HASH", videoHash);
-                                break;
+                            List<String> currentValue = indices.get(server);
+                            if (currentValue == null) {
+                                currentValue = new ArrayList<String>();
+                                indices.put(server, currentValue);
+                            }
+                            if (!currentValue.contains(videoId)) {
+                                currentValue.add(videoId);
                             }
                         }
+                        index = pageSource.indexOf(start[i], index + 1);
                     }
                 }
-                // exit "end" loop if the video hash is found
-                else
-                    break;
             }
-            // exit the "start" loop if the video hash is found
-            if (videoHash != null)
-                break;
         }
-        // throw exception if the video is not found
-        if (videoUrl == null) {
-            throw new NullPointerException("The video URL is null!");
+        // convert every video id to appropriate url
+        for (Map.Entry<String, List<String>> entry : indices.entrySet()) {
+            Log.e("BREAKPOINT", "HERE " + (entry == null));
+            if (entry != null) {
+                List<String> videosIds = entry.getValue();
+                found = true;
+                // create the video URL according to the server
+                switch (entry.getKey()) {
+                    case dailymotion:
+                        for (int j = 0; j < videosIds.size(); j++) {
+                            videoId = videosIds.get(j);
+                            videosIds.set(j, "http://www.dailymotion.com/video/" + videoId);
+                            Log.e("DAILYMOTION-" + j, videosIds.get(j));
+                            // return the first video found
+                            return videosIds.get(j);
+                        }
+                        break;
+                    case liveleak:
+                        for (int j = 0; j < videosIds.size(); j++) {
+                            videoId = videosIds.get(j);
+                            videosIds.set(j, "http://www.liveleak.com/ll_embed?f=" + videoId);
+                            Log.e("LIVELEAK-" + j, videosIds.get(j));
+                            // return the first video found
+                            return videosIds.get(j);
+                        }
+                        break;
+                    case vimeo:
+                        for (int j = 0; j < videosIds.size(); j++) {
+                            videoId = videosIds.get(j);
+                            videosIds.set(j, "http://player.vimeo.com/video/" + videoId);
+                            Log.e("VIMEO-" + j, videosIds.get(j));
+                            // return the first video found
+                            return videosIds.get(j);
+                        }
+                        break;
+                    default:
+                        for (int j = 0; j < videosIds.size(); j++) {
+                            videoId = videosIds.get(j);
+                            videosIds.set(j, "http://www.youtube.com/watch?v=" + videoId);
+                            Log.e("YOUTUBE-" + j, videosIds.get(j));
+                            // return the first video found
+                            return videosIds.get(j);
+                        }
+                        break;
+                }
+            }
         }
-        // create the video URL according to the server
-        switch (i) {
-            case 3:
-                videoUrl = "http://www.dailymotion.com/video/" + videoHash;
-                break;
-            case 4:
-                videoUrl = "http://www.liveleak.com/ll_embed?f=" + videoHash;
-                break;
-            case 5:
-                videoUrl = "http://player.vimeo.com/video/" + videoHash;
-                break;
-            default:
-                videoUrl = "http://www.youtube.com/watch?v=" + videoHash;
-                break;
+        // throw exception if no video found
+        if (!found) {
+            throw new NullPointerException("No videos found");
+        }
+        else {
+            // TODO return a list with all the videos' urls ready to play
         }
         return videoUrl;
+    }
+
+    private static String retrieveVideoId(String videoUrl) {
+        String videoId = null;
+        char[] chars = videoUrl.toCharArray();
+        // check every character if it a part of video's url
+        for (int k = 0; k < chars.length; k++) {
+            // we need letters, numbers and some special
+            // characters as a part of the video's url
+            if (isApprovedCharacter(chars[k])) {
+                // if the videoHash string is null do not append
+                // new characters
+                if (videoId != null)
+                    videoId = videoId + chars[k];
+                else
+                    videoId = String.valueOf(chars[k]);
+            }
+            // finish the url construction if any non-specified
+            // character found
+            else {
+                Log.e("HASH", videoId);
+                break;
+            }
+        }
+        return videoId;
     }
 
     private static boolean isApprovedCharacter(char c) {
