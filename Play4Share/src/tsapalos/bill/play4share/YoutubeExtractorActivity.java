@@ -92,9 +92,15 @@ public class YoutubeExtractorActivity extends Activity {
                         primaryVideoUrlTitleTextView.setText(R.string.primary_video_url);
                         int secondaryVideosSum = secondaryVideosUrls.size();
                         LinearLayout parent = (LinearLayout) findViewById(R.id.internal_layout);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        //configure different layout parameters according to the view
+                        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
+                        textViewParams.setMargins(0, (int)getResources().getDimension(R.dimen.medium_margin), 0, 0);
+                        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                        buttonParams.setMargins(0, (int)getResources().getDimension(R.dimen.small_margin), 0, 0);
                         secondaryVideoUrlTitleTextView = new TextView(YoutubeExtractorActivity.this);
                         secondaryVideoUrlTitleTextView
                                 .setTextAppearance(YoutubeExtractorActivity.this,
@@ -123,8 +129,8 @@ public class YoutubeExtractorActivity extends Activity {
 
                                 }
                             });
-                            parent.addView(secondaryVideoUrlTextViews[i], params);
-                            parent.addView(playSecondaryVideos[i], params);
+                            parent.addView(secondaryVideoUrlTextViews[i], textViewParams);
+                            parent.addView(playSecondaryVideos[i], buttonParams);
                         }
                     }
 
