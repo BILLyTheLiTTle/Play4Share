@@ -12,6 +12,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Play4Share.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package tsapalos.bill.play4share;
 
 import java.util.List;
@@ -105,15 +106,18 @@ public class YoutubeExtractorActivity extends Activity {
                         primaryVideoUrlTitleTextView.setText(R.string.primary_video_url);
                         int secondaryVideosSum = secondaryVideosUrls.size();
                         LinearLayout parent = (LinearLayout) findViewById(R.id.internal_layout);
-                        //configure different layout parameters according to the view
+                        // configure different layout parameters according to
+                        // the view
                         LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
-                        textViewParams.setMargins(0, (int)getResources().getDimension(R.dimen.medium_margin), 0, 0);
+                        textViewParams.setMargins(0,
+                                (int) getResources().getDimension(R.dimen.medium_margin), 0, 0);
                         LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
-                        buttonParams.setMargins(0, (int)getResources().getDimension(R.dimen.small_margin), 0, 0);
+                        buttonParams.setMargins(0,
+                                (int) getResources().getDimension(R.dimen.small_margin), 0, 0);
                         secondaryVideoUrlTitleTextView = new TextView(YoutubeExtractorActivity.this);
                         secondaryVideoUrlTitleTextView
                                 .setTextAppearance(YoutubeExtractorActivity.this,
@@ -193,12 +197,17 @@ public class YoutubeExtractorActivity extends Activity {
     }
 
     public void play(View view) {
-        String url;
-        if (view.getId() < secondaryVideosUrls.size()) {
-            url = secondaryVideosUrls.get(view.getId());
-        }
-        else {
-            url = primaryVideoUrl;
+        // if the button is enabled and able to be click means that at least one
+        // video exists. So, go on, and set it as default playable video.
+        String url = primaryVideoUrl;
+
+        // check if secondary videos list is not empty
+        if (secondaryVideosUrls != null) {
+            // check the id of the button to match with the url video
+            if (view.getId() < secondaryVideosUrls.size()) {
+                // go on, and update the playable video.
+                url = secondaryVideosUrls.get(view.getId());
+            }
         }
 
         Intent i = new Intent(Intent.ACTION_VIEW);

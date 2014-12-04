@@ -12,6 +12,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Play4Share.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package tsapalos.bill.play4share;
 
 import android.util.Log;
@@ -131,7 +132,7 @@ public class UrlUtils {
             }
         }
         // create the lsit with all videos' urls
-        List<String> videosUrls=new ArrayList<String>(3);
+        List<String> videosUrls = new ArrayList<String>(3);
         // convert every video id to appropriate url
         for (Map.Entry<String, List<String>> entry : indices.entrySet()) {
             Log.e("BREAKPOINT", "HERE " + (entry == null));
@@ -185,12 +186,12 @@ public class UrlUtils {
         }
         return videosUrls;
     }
-    
-    public static String getPrimaryVideo(List<String> videosUrls){
+
+    public static String getPrimaryVideo(List<String> videosUrls) {
         return videosUrls.get(0);
     }
-    
-    public static List<String> getSecondaryVideos(List<String> videosUrls){
+
+    public static List<String> getSecondaryVideos(List<String> videosUrls) {
         videosUrls.remove(0);
         return videosUrls;
     }
