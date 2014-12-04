@@ -176,6 +176,15 @@ public class UrlUtils {
         }
         return videosUrls;
     }
+    
+    public static String getPrimaryVideo(List<String> videosUrls){
+        return videosUrls.get(0);
+    }
+    
+    public static List<String> getSecondaryVideos(List<String> videosUrls){
+        videosUrls.remove(0);
+        return videosUrls;
+    }
 
     private static String retrieveVideoId(String videoUrl) {
         String videoId = null;
