@@ -16,12 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class YoutubeExtractorActivity extends Activity {
 
-    private TextView incomingURLTextView, primaryVideoUrlTextView;
+    private TextView incomingURLTextView, primaryVideoUrlTextView, primaryVideoUrlTitleTextView,
+            secondaryVideoUrlTitleTextView;
     private TextView[] secondaryVideoUrlTextViews;
     private Button playPrimaryVideo;
     private Button[] playSecondaryVideos;
@@ -37,6 +39,7 @@ public class YoutubeExtractorActivity extends Activity {
 
         incomingURLTextView = (TextView) findViewById(R.id.incoming_url_content_textview);
         primaryVideoUrlTextView = (TextView) findViewById(R.id.video_url_content_textview);
+        primaryVideoUrlTitleTextView = (TextView) findViewById(R.id.video_url_title_textview);
         playPrimaryVideo = (Button) findViewById(R.id.primary_play_button);
 
         Intent intent = getIntent();
@@ -83,9 +86,26 @@ public class YoutubeExtractorActivity extends Activity {
                     String txt = getString(R.string.play);
                     playPrimaryVideo.setText(txt);
                     playPrimaryVideo.setEnabled(true);
-                    if (secondaryVideosUrls!=null) {
+                    // update the UI if the the secondary video list is
+                    // available
+                    if (secondaryVideosUrls != null) {
+                        primaryVideoUrlTitleTextView.setText(R.string.primary_video_url);
                         int secondaryVideosSum = secondaryVideosUrls.size();
                         LinearLayout parent = (LinearLayout) findViewById(R.id.internal_layout);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                        secondaryVideoUrlTitleTextView = new TextView(YoutubeExtractorActivity.this);
+                        secondaryVideoUrlTitleTextView
+                                .setTextAppearance(YoutubeExtractorActivity.this,
+                                        android.R.style.TextAppearance_Large);
+                        if (secondaryVideosSum == 1) {
+                            secondaryVideoUrlTitleTextView.setText(R.string.secondary_video_url);
+                        }
+                        else {
+                            secondaryVideoUrlTitleTextView.setText(R.string.secondary_videos_urls);
+                        }
+                        parent.addView(secondaryVideoUrlTitleTextView);
                         secondaryVideoUrlTextViews = new TextView[secondaryVideosSum];
                         playSecondaryVideos = new Button[secondaryVideosSum];
                         for (int i = 0; i < secondaryVideosSum; i++) {
@@ -103,8 +123,8 @@ public class YoutubeExtractorActivity extends Activity {
 
                                 }
                             });
-                            parent.addView(secondaryVideoUrlTextViews[i]);
-                            parent.addView(playSecondaryVideos[i]);
+                            parent.addView(secondaryVideoUrlTextViews[i], params);
+                            parent.addView(playSecondaryVideos[i], params);
                         }
                     }
 
@@ -135,6 +155,7 @@ public class YoutubeExtractorActivity extends Activity {
                         handler.sendMessage(handler.obtainMessage(1));
                         videosUrls = UrlUtils.exportVideoUrl(htmlSource);
                         primaryVideoUrl = UrlUtils.getPrimaryVideo(videosUrls);
+                        // retrieve secondary video list if available
                         if (videosUrls.size() > 1) {
                             secondaryVideosUrls = UrlUtils.getSecondaryVideos(videosUrls);
                         }
