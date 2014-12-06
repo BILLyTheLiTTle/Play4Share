@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="button_stroke">#20534e</color>
+    <color name="button_pressed_start_gradient">#062d30</color>
+    <color name="button_pressed_end_gradient">#4c898e</color>
+    <color name="button_solid">#125156</color>
+    <color name="button_default_start_gradient">#4c898e</color>
+    <color name="button_default_end_gradient">#125156</color>
+    <color name="button_shadow">#000000</color>
+</resources>

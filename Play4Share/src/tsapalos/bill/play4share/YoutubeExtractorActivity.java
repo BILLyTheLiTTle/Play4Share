@@ -20,11 +20,13 @@ import java.util.List;
 import tsapalos.bill.play4share.R;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources.Theme;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -122,7 +124,13 @@ public class YoutubeExtractorActivity extends Activity {
                         secondaryVideoUrlTitleTextView
                                 .setTextAppearance(YoutubeExtractorActivity.this,
                                         android.R.style.TextAppearance_Large);
-                        secondaryVideoUrlTitleTextView.setTextColor(getResources().getColor(android.R.color.white));
+                        
+                        //get the text color specified from theme
+                        TypedValue typedValue = new TypedValue();
+                        Theme theme=YoutubeExtractorActivity.this.getTheme();
+                        theme.resolveAttribute(android.R.attr.textColor, typedValue, true);
+                        
+                        secondaryVideoUrlTitleTextView.setTextColor(typedValue.data);
                         if (secondaryVideosSum == 1) {
                             secondaryVideoUrlTitleTextView.setText(R.string.secondary_video_url);
                         }
