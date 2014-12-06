@@ -122,6 +122,7 @@ public class YoutubeExtractorActivity extends Activity {
                         secondaryVideoUrlTitleTextView
                                 .setTextAppearance(YoutubeExtractorActivity.this,
                                         android.R.style.TextAppearance_Large);
+                        secondaryVideoUrlTitleTextView.setTextColor(getResources().getColor(android.R.color.white));
                         if (secondaryVideosSum == 1) {
                             secondaryVideoUrlTitleTextView.setText(R.string.secondary_video_url);
                         }
