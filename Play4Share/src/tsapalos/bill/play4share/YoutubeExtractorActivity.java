@@ -183,7 +183,7 @@ public class YoutubeExtractorActivity extends Activity {
                         Log.e("RAW", raw);
                         handler.sendMessage(handler.obtainMessage(2));
                         htmlSource = UrlUtils.getHtmlSource(raw);
-                        // Log.e("PAGE", htmlSource);
+                        Log.e("PAGE", htmlSource);
                         handler.sendMessage(handler.obtainMessage(1));
                         videosUrls = UrlUtils.exportVideoUrl(htmlSource);
                         primaryVideoUrl = UrlUtils.getPrimaryVideo(videosUrls);
