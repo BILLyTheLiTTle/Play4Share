@@ -124,12 +124,12 @@ public class YoutubeExtractorActivity extends Activity {
                         secondaryVideoUrlTitleTextView
                                 .setTextAppearance(YoutubeExtractorActivity.this,
                                         android.R.style.TextAppearance_Large);
-                        
-                        //get the text color specified from theme
+
+                        // get the text color specified from theme
                         TypedValue typedValue = new TypedValue();
-                        Theme theme=YoutubeExtractorActivity.this.getTheme();
+                        Theme theme = YoutubeExtractorActivity.this.getTheme();
                         theme.resolveAttribute(android.R.attr.textColor, typedValue, true);
-                        
+
                         secondaryVideoUrlTitleTextView.setTextColor(typedValue.data);
                         if (secondaryVideosSum == 1) {
                             secondaryVideoUrlTitleTextView.setText(R.string.secondary_video_url);
@@ -180,10 +180,10 @@ public class YoutubeExtractorActivity extends Activity {
                     if (link != null) {
                         handler.sendMessage(handler.obtainMessage(3));
                         String raw = UrlUtils.getRawPageUrl(link);
-                        Log.e("RAW", raw);
+                        // Log.e("RAW", raw);
                         handler.sendMessage(handler.obtainMessage(2));
                         htmlSource = UrlUtils.getHtmlSource(raw);
-                        Log.e("PAGE", htmlSource);
+                        // Log.e("PAGE", htmlSource);
                         handler.sendMessage(handler.obtainMessage(1));
                         videosUrls = UrlUtils.exportVideoUrl(htmlSource);
                         primaryVideoUrl = UrlUtils.getPrimaryVideo(videosUrls);

@@ -65,9 +65,12 @@ public class UrlUtils {
             // Read line by line
             sb.append(line + "\n");
 
-        String resString = sb.toString(); // Result is here        
+        String resString = sb.toString(); // Result is here
 
-        Log.e("FOUND", ""+resString.contains("you"));
+        // remove comments
+        // Log.e("COMMENT1", ""+resString.contains("Style compiled by theme"));
+        resString = resString.replaceAll("<!.*?>", "");
+        // Log.e("COMMENT2", ""+resString.contains("Style compiled by theme"));
 
         is.close();
         return resString;
@@ -137,7 +140,6 @@ public class UrlUtils {
         List<String> videosUrls = new ArrayList<String>(3);
         // convert every video id to appropriate url
         for (Map.Entry<String, List<String>> entry : indices.entrySet()) {
-            Log.e("BREAKPOINT", "HERE " + (entry == null));
             if (entry != null) {
                 List<String> videosIds = entry.getValue();
                 found = true;
@@ -147,7 +149,7 @@ public class UrlUtils {
                         for (int j = 0; j < videosIds.size(); j++) {
                             videoId = videosIds.get(j);
                             videosIds.set(j, "http://www.dailymotion.com/video/" + videoId);
-                            Log.e("DAILYMOTION-" + j, videosIds.get(j));
+                            // Log.e("DAILYMOTION-" + j, videosIds.get(j));
                             // add the url to the total list
                             videosUrls.add(videosIds.get(j));
                         }
@@ -156,7 +158,7 @@ public class UrlUtils {
                         for (int j = 0; j < videosIds.size(); j++) {
                             videoId = videosIds.get(j);
                             videosIds.set(j, "http://www.liveleak.com/ll_embed?f=" + videoId);
-                            Log.e("LIVELEAK-" + j, videosIds.get(j));
+                            // Log.e("LIVELEAK-" + j, videosIds.get(j));
                             // add the url to the total list
                             videosUrls.add(videosIds.get(j));
                         }
@@ -165,7 +167,7 @@ public class UrlUtils {
                         for (int j = 0; j < videosIds.size(); j++) {
                             videoId = videosIds.get(j);
                             videosIds.set(j, "http://player.vimeo.com/video/" + videoId);
-                            Log.e("VIMEO-" + j, videosIds.get(j));
+                            // Log.e("VIMEO-" + j, videosIds.get(j));
                             // add the url to the total list
                             videosUrls.add(videosIds.get(j));
                         }
@@ -174,7 +176,7 @@ public class UrlUtils {
                         for (int j = 0; j < videosIds.size(); j++) {
                             videoId = videosIds.get(j);
                             videosIds.set(j, "http://www.youtube.com/watch?v=" + videoId);
-                            Log.e("YOUTUBE-" + j, videosIds.get(j));
+                            // Log.e("YOUTUBE-" + j, videosIds.get(j));
                             // add the url to the total list
                             videosUrls.add(videosIds.get(j));
                         }
@@ -216,7 +218,7 @@ public class UrlUtils {
             // finish the url construction if any non-specified
             // character found
             else {
-                Log.e("HASH", videoId);
+                // Log.e("HASH", videoId);
                 break;
             }
         }
