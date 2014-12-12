@@ -1,6 +1,54 @@
+#built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
 Play4Share/bin/*
-Play4Share/dist/*
 Play4Share/gen/*
+
+# Local configuration file (sdk path, etc)
+Play4Share/local.properties
+
+# Windows thumbnail db
+Play4Share/Thumbs.db
+
+# OSX files
+Play4Share/.DS_Store
+
+# Eclipse project files
+Play4Share/.classpath
+Play4Share/.project
+Play4Share/proguard/*
+Play4Share/dist/*
 Play4Share/doc/*
 Play4Share/.settings/*
 Play4Share/project.properties
+
+# Android Studio
+Play4Share/.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
+Play4Share/.gradle/*
+Play4Share/build/
+#My notices for remove
+Play4Share/app/app.iml
+Play4Share/gradle/gradle.iml
+Play4Share/gradle/local.properties
+Play4Share/Play4Share.iml
+
+# Signing files
+Play4Share/.signing/*
+
+# Optional - for older project format
+Play4Share/*/out
+Play4Share/*/build
+Play4Share/*/production
+*.iws
+*.ipr
+*~
+*.swp

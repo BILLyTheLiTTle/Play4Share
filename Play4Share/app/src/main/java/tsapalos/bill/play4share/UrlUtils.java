@@ -1,5 +1,5 @@
 /**This file is part of Play4Share.
- * 
+ *
  * Play4Share is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License.
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -57,7 +58,7 @@ public class UrlUtils {
         HttpResponse response = httpclient.execute(httpget); // Execute it
         HttpEntity entity = response.getEntity();
         InputStream is = entity.getContent(); // Create an InputStream with the
-                                              // response
+        // response
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"), 8);
         StringBuilder sb = new StringBuilder();
         String line = null;
@@ -79,15 +80,15 @@ public class UrlUtils {
     public static List<String> exportVideoUrl(String pageSource) throws NullPointerException {
         final String youtube = "YouTube", dailymotion = "Dailymotion", liveleak = "LiveLeak", vimeo = "Vimeo";
         Map<String, List<String>> indices = new HashMap<String, List<String>>(3);
-        final String[] start = new String[] {
+        final String[] start = new String[]{
                 "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=",
                 ".dailymotion.com/video/", "liveleak.com/ll_embed?f=", "player.vimeo.com/video/"
 
         };
-        final int[] start_advance = new int[] {
+        final int[] start_advance = new int[]{
                 14, 19, 21, 23, 24, 23
         };
-        final String[] end = new String[] {
+        final String[] end = new String[]{
                 "\"", "\'"
         };
         String videoUrl = null, videoId = null, server = null;
@@ -144,50 +145,48 @@ public class UrlUtils {
                 List<String> videosIds = entry.getValue();
                 found = true;
                 // create the video URL according to the server
-                switch (entry.getKey()) {
-                    case dailymotion:
-                        for (int j = 0; j < videosIds.size(); j++) {
-                            videoId = videosIds.get(j);
-                            videosIds.set(j, "http://www.dailymotion.com/video/" + videoId);
-                            // Log.e("DAILYMOTION-" + j, videosIds.get(j));
-                            // add the url to the total list
-                            videosUrls.add(videosIds.get(j));
-                        }
-                        break;
-                    case liveleak:
-                        for (int j = 0; j < videosIds.size(); j++) {
-                            videoId = videosIds.get(j);
-                            videosIds.set(j, "http://www.liveleak.com/ll_embed?f=" + videoId);
-                            // Log.e("LIVELEAK-" + j, videosIds.get(j));
-                            // add the url to the total list
-                            videosUrls.add(videosIds.get(j));
-                        }
-                        break;
-                    case vimeo:
-                        for (int j = 0; j < videosIds.size(); j++) {
-                            videoId = videosIds.get(j);
-                            videosIds.set(j, "http://player.vimeo.com/video/" + videoId);
-                            // Log.e("VIMEO-" + j, videosIds.get(j));
-                            // add the url to the total list
-                            videosUrls.add(videosIds.get(j));
-                        }
-                        break;
-                    default:
-                        for (int j = 0; j < videosIds.size(); j++) {
-                            videoId = videosIds.get(j);
-                            videosIds.set(j, "http://www.youtube.com/watch?v=" + videoId);
-                            // Log.e("YOUTUBE-" + j, videosIds.get(j));
-                            // add the url to the total list
-                            videosUrls.add(videosIds.get(j));
-                        }
-                        break;
+                if (entry.getKey().equals(dailymotion)) {
+                    for (int j = 0; j < videosIds.size(); j++) {
+                        videoId = videosIds.get(j);
+                        videosIds.set(j, "http://www.dailymotion.com/video/" + videoId);
+                        // Log.e("DAILYMOTION-" + j, videosIds.get(j));
+                        // add the url to the total list
+                        videosUrls.add(videosIds.get(j));
+                    }
+                } else if (entry.getKey().equals(liveleak)) {
+                    for (int j = 0; j < videosIds.size(); j++) {
+                        videoId = videosIds.get(j);
+                        videosIds.set(j, "http://www.liveleak.com/ll_embed?f=" + videoId);
+                        // Log.e("LIVELEAK-" + j, videosIds.get(j));
+                        // add the url to the total list
+                        videosUrls.add(videosIds.get(j));
+                    }
+                } else if (entry.getKey().equals(vimeo)) {
+                    for (int j = 0; j < videosIds.size(); j++) {
+                        videoId = videosIds.get(j);
+                        videosIds.set(j, "http://player.vimeo.com/video/" + videoId);
+                        // Log.e("VIMEO-" + j, videosIds.get(j));
+                        // add the url to the total list
+                        videosUrls.add(videosIds.get(j));
+                    }
+                } else {
+                    for (int j = 0; j < videosIds.size(); j++) {
+                        videoId = videosIds.get(j);
+                        videosIds.set(j, "http://www.youtube.com/watch?v=" + videoId);
+                        // Log.e("YOUTUBE-" + j, videosIds.get(j));
+                        // add the url to the total list
+                        videosUrls.add(videosIds.get(j));
+                    }
                 }
             }
         }
         // throw exception if no video found
-        if (!found) {
+        if (!found)
+
+        {
             throw new NullPointerException("No videos found");
         }
+
         return videosUrls;
     }
 
@@ -226,13 +225,12 @@ public class UrlUtils {
     }
 
     private static boolean isApprovedCharacter(char c) {
-        char[] approved = new char[] {
+        char[] approved = new char[]{
                 '-', '_'
         };
         if (Character.isLetterOrDigit(c)) {
             return true;
-        }
-        else {
+        } else {
             for (int i = 0; i < approved.length; i++) {
                 if (c == approved[i]) {
                     return true;
