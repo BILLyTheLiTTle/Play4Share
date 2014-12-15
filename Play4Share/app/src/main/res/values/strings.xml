@@ -9,6 +9,7 @@
     <string name="secondary_video_url">Secondary video URL:</string>
     <string name="secondary_videos_urls">Secondary videos URLs:</string>
     <string name="video_url_content">Video URL should appear here!</string>
+    <string name="open_browser">Open in browser</string>
     <string name="play">Play</string>
     <string name="bug_report">Report bug</string>
     <string name="exit">Exit</string>

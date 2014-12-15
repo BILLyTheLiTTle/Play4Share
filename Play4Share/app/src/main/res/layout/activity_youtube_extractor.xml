@@ -29,12 +29,24 @@
             android:layout_below="@+id/incoming_url_title_textView"
             android:text="@string/incoming_url_content" />
 
+        <Button
+            android:id="@+id/open_browser_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/incoming_url_content_textview"
+            android:layout_marginTop="@dimen/small_margin"
+            android:enabled="false"
+            android:textColor="@drawable/custom_txt_genoa"
+            android:onClick="browse"
+            android:text="@string/open_browser" />
+
         <TextView
             android:id="@+id/video_url_title_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/incoming_url_content_textview"
+            android:layout_below="@+id/open_browser_button"
             android:layout_marginTop="@dimen/big_margin"
             android:text="@string/video_url"
             android:textAppearance="?android:attr/textAppearanceLarge" />

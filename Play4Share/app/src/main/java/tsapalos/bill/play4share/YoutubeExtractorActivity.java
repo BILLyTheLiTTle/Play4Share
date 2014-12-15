@@ -41,7 +41,7 @@ public class YoutubeExtractorActivity extends Activity {
     private TextView incomingURLTextView, primaryVideoUrlTextView, primaryVideoUrlTitleTextView,
             secondaryVideoUrlTitleTextView;
     private TextView[] secondaryVideoUrlTextViews;
-    private Button playPrimaryVideo;
+    private Button playPrimaryVideo, openBrowser;
     private Button[] playSecondaryVideos;
 
     private String htmlSource, link, exceptionLog, primaryVideoUrl;
@@ -57,6 +57,7 @@ public class YoutubeExtractorActivity extends Activity {
         primaryVideoUrlTextView = (TextView) findViewById(R.id.video_url_content_textview);
         primaryVideoUrlTitleTextView = (TextView) findViewById(R.id.video_url_title_textview);
         playPrimaryVideo = (Button) findViewById(R.id.primary_play_button);
+        openBrowser = (Button) findViewById(R.id.open_browser_button);
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -72,6 +73,7 @@ public class YoutubeExtractorActivity extends Activity {
 
         if (link != null) {
             incomingURLTextView.setText(link);
+            openBrowser.setEnabled(true);
             exceptionLog = "The URL (" + link
                     + ") does not throw an exception but the video cannot be played.";
         }
@@ -221,6 +223,12 @@ public class YoutubeExtractorActivity extends Activity {
 
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
+        startActivity(i);
+    }
+
+    public void browse(View view) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(link));
         startActivity(i);
     }
 
