@@ -41,8 +41,8 @@ public class UrlUtils {
         // decode URL special characters
         facebookUrl = URLDecoder.decode(facebookUrl, "UTF-8");
         // clean the stripped url from page pointers
-        if (facebookUrl.lastIndexOf("/#") != -1)
-            facebookUrl = facebookUrl.replaceAll("/#", "/");
+        if (facebookUrl.lastIndexOf("/#") == facebookUrl.lastIndexOf("/"))
+            facebookUrl = facebookUrl.replaceAll("/#.*", "/");
 
         if (!facebookUrl.contains(start)) {
             return facebookUrl;
