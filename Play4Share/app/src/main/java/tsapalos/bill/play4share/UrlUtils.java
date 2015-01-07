@@ -81,12 +81,17 @@ public class UrlUtils {
         final String youtube = "YouTube", dailymotion = "Dailymotion", liveleak = "LiveLeak", vimeo = "Vimeo";
         Map<String, List<String>> indices = new HashMap<String, List<String>>(3);
         final String[] start = new String[]{
-                "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=",
-                ".dailymotion.com/video/", "liveleak.com/ll_embed?f=", "player.vimeo.com/video/"
+                "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=", ".youtube.com/v/",
+                ".dailymotion.com/video/", //4
+                "liveleak.com/ll_embed?f=", //5
+                "player.vimeo.com/video/" //6
 
         };
         final int[] start_advance = new int[]{
-                14, 19, 21, 23, 24, 23
+                14, 19, 21, 15,
+                23, //4
+                24, //5
+                23  //6
         };
         final String[] end = new String[]{
                 "\"", "\'"
@@ -110,13 +115,13 @@ public class UrlUtils {
                         // store every video id found
                         if (videoId != null) {
                             switch (i) {
-                                case 3:
+                                case 4:
                                     server = dailymotion;
                                     break;
-                                case 4:
+                                case 5:
                                     server = liveleak;
                                     break;
-                                case 5:
+                                case 6:
                                     server = vimeo;
                                     break;
                                 default:
