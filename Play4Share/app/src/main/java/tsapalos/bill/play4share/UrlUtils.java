@@ -15,7 +15,11 @@
 
 package tsapalos.bill.play4share;
 
-import android.util.Log;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,12 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 public class UrlUtils {
     public static String getRawPageUrl(String facebookUrl) throws UnsupportedEncodingException {
@@ -99,7 +97,7 @@ public class UrlUtils {
         };
         final String[] end = new String[]{
                 "\"", "\'",
-                "/default.jpg" //8
+                "/" //8
         };
         String videoUrl = null, videoId = null, server = null;
         boolean found = false;
@@ -113,9 +111,13 @@ public class UrlUtils {
                         // sniff the possible start of the url of the
                         // video
                         videoUrl = pageSource.substring(index + start_advance[i]);
-                        // sniff the possible end of the url of the
-                        // video
-                        videoUrl = videoUrl.substring(0, videoUrl.indexOf(end[j]));
+                        // use this check to avoid StringIndexOutOfBoundsException if string does not exist
+                        // then sniff the possible end of the url of the video
+                        if (videoUrl.contains(end[j])) {
+                            videoUrl = videoUrl.substring(0, videoUrl.indexOf(end[j]));
+                        } else {
+                            break;
+                        }
                         videoId = retrieveVideoId(videoUrl);
                         // store every video id found
                         if (videoId != null) {
