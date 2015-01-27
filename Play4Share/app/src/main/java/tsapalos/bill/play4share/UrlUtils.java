@@ -84,17 +84,22 @@ public class UrlUtils {
                 "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=", ".youtube.com/v/",
                 ".dailymotion.com/video/", //4
                 "liveleak.com/ll_embed?f=", //5
-                "player.vimeo.com/video/" //6
+                "player.vimeo.com/video/", //6
+                "data-first-video=\"", //7
+                "img.youtube.com/vi/" //8
 
         };
         final int[] start_advance = new int[]{
                 14, 19, 21, 15,
                 23, //4
                 24, //5
-                23  //6
+                23, //6
+                18, //7
+                19 //8
         };
         final String[] end = new String[]{
-                "\"", "\'"
+                "\"", "\'",
+                "/default.jpg" //8
         };
         String videoUrl = null, videoId = null, server = null;
         boolean found = false;
@@ -142,7 +147,7 @@ public class UrlUtils {
                 }
             }
         }
-        // create the lsit with all videos' urls
+        // create the list with all videos' urls
         List<String> videosUrls = new ArrayList<String>(3);
         // convert every video id to appropriate url
         for (Map.Entry<String, List<String>> entry : indices.entrySet()) {
