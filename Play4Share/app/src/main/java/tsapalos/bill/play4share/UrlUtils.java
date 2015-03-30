@@ -76,7 +76,7 @@ public class UrlUtils {
     }
 
     public static List<String> exportVideoUrl(String pageSource) throws NullPointerException {
-        final String youtube = "YouTube", dailymotion = "Dailymotion", liveleak = "LiveLeak", vimeo = "Vimeo";
+        final String youtube = "YouTube", dailymotion = "Dailymotion", liveleak = "LiveLeak", vimeo = "Vimeo", gag9="9gag.tv";
         Map<String, List<String>> indices = new HashMap<String, List<String>>(3);
         final String[] start = new String[]{
                 "data-videoid=\"", ".youtube.com/embed/", ".youtube.com/watch?v=", ".youtube.com/v/",
@@ -84,7 +84,8 @@ public class UrlUtils {
                 "liveleak.com/ll_embed?f=", //5
                 "player.vimeo.com/video/", //6
                 "data-first-video=\"", //7
-                "img.youtube.com/vi/" //8
+                "img.youtube.com/vi/", //8
+                "data-external-id=\"" //9
 
         };
         final int[] start_advance = new int[]{
@@ -93,11 +94,13 @@ public class UrlUtils {
                 24, //5
                 23, //6
                 18, //7
-                19 //8
+                19, //8
+                18 //9
         };
         final String[] end = new String[]{
                 "\"", "\'",
                 "/" //8
+
         };
         String videoUrl = null, videoId = null, server = null;
         boolean found = false;
